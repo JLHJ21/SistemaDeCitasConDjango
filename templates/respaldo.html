@@ -1,0 +1,219 @@
+<div class="input-group mb-3 position-relative">
+
+    <div class="col-12">
+        <label for="nombre" class="form-label m-0 p-0"><b>Nombre</b></label>
+        <input type="text" class="form-control" placeholder="Ingresar nombre" onkeypress="return SoloLetras(event);"
+            onpaste="return false" minlength="3" maxlength="60" required>
+        <div class="invalid-tooltip">
+            Es necesario ingresar un nombre
+        </div>
+    </div>
+</div>
+<div class="input-group mb-3 position-relative">
+    <div class="col-12">
+        <label for="usuario" class="form-label m-0 p-0"><b>Usuario</b></label>
+        <input type="text" class="form-control" placeholder="Ingresar usuario"
+            onkeypress="return SoloLetrasYNumerosYGuiones(event);" onpaste="return false" minlength="3" maxlength="30"
+            required>
+        <div class="invalid-tooltip">
+            Es necesario ingresar un nombre de usuario
+        </div>
+    </div>
+</div>
+<div class="input-group mb-3 position-relative">
+    <div class="col-12">
+        <label for="email" class="form-label m-0 p-0"><b>Correo Electrónico</b></label>
+        <input type="email" class="form-control" placeholder="Ingresar correo electrónico"
+            onkeypress="return SoloCorreo(event);" onpaste="return false" minlength="3" maxlength="50" required>
+        <div class="invalid-tooltip">
+            Es necesario ingresar un correo electrónico
+        </div>
+    </div>
+</div>
+<div class="input-group mb-3 position-relative">
+    <div class="col-12">
+        <label for="email" class="form-label m-0 p-0"><b>Cédula</b></label>
+        <div class="d-flex">
+            <div class="col-2 pe-1">
+                <select class="form-select" required>
+                    <option value="1" selected>V-</option>
+                    <option value="2">E-</option>
+                </select>
+            </div>
+
+            <div class="col-10">
+                <input type="text" class="form-control" placeholder="Ingresar cédula."
+                    onkeypress="return SoloNumeros(event);" onpaste="return false" minlength="3" maxlength="20"
+                    required>
+
+            </div>
+
+        </div>
+        <div class="invalid-tooltip">
+            Es necesario ingresar una cédula
+        </div>
+    </div>
+</div>
+<div class="input-group mb-3 position-relative">
+    <div class="col-12">
+        <label for="email" class="form-label m-0 p-0"><b>Número de Teléfono</b></label>
+        <input type="email" class="form-control" placeholder="Ingresar número de teléfono. Ejp: 01231234567"
+            onkeypress="return SoloNumeros(event);" onpaste="return false" minlength="3" maxlength="20" required>
+        <div class="invalid-tooltip">
+            Es necesario ingresar un número de teléfono
+        </div>
+    </div>
+</div>
+<div class="input-group mb-3 position-relative">
+    <div class="col-12">
+        <label for="contrasenna" class="form-label m-0 p-0"><b>Contraseña</b></label>
+        <input type="password" class="form-control" placeholder="Ingresar contraseña"
+            onkeypress="return SoloLetrasYNumerosYGuiones(event);" onpaste="return false" minlength="3" maxlength="30"
+            required>
+        <div class="invalid-tooltip">
+            Es necesario ingresar una contraseña
+        </div>
+    </div>
+</div>
+<div class="input-group mb-3 position-relative">
+    <div class="col-12">
+        <label for="rp_contrasenna" class="form-label m-0 p-0"><b>Repita Contraseña</b></label>
+        <input type="password" class="form-control" placeholder="Repetir contraseña" aria-label="Username"
+            onkeypress="return SoloLetrasYNumerosYGuiones(event);" onpaste="return false" minlength="3" maxlength="30"
+            required>
+        <div class="invalid-tooltip">
+            Ambas contraseñas deben coincidir
+        </div>
+    </div>
+</div>
+
+
+
+
+"""'nombre',
+'usuario',
+'correo',
+'nacionalidad',
+'cedula',
+'numero',
+'contrasenna1',
+'contrasenna2'"""
+
+
+
+class FormIniciar(forms.Form, UserCreationForm):
+
+def __init__(self, *args, **kwargs):
+super().__init__(*args, **kwargs)
+
+self.fields['username'].widget.attrs.update({
+'type': 'text',
+'class': 'form-control',
+'placeholder': 'Ingresar nombre de usuario',
+'onkeypress': 'return SoloLetrasYNumerosYGuiones(event);',
+'onpaste': 'return false;',
+'minlength': '3',
+'maxlength': '30',
+'required': 'true',
+'name': 'username',
+'id': 'username',
+}),
+self.fields['password1'].widget.attrs.update({
+'class': 'form-control',
+'placeholder': 'Ingresar contraseña',
+'onkeypress': 'return SoloLetrasYNumerosYGuiones(event);',
+'onpaste': 'return false;',
+'minlength': '3',
+'maxlength': '30',
+'required': 'true',
+'name': 'password1',
+'id': 'password1',
+}),
+# del self.fields['password1'],
+# del self.fields['password2'],
+# del self.fields['username']
+
+# usuario = forms.CharField()
+# contrasenna = forms.CharField(widget=forms.PasswordInput(
+# attrs={'type': 'password'}))
+
+class Meta(UserCreationForm.Meta):
+model = User
+fields = UserCreationForm.Meta.fields + \
+('username', 'password1')
+
+<li>__all__
+    <ul class="errorlist nonfield">
+        <li>No coinciden el usuario y la contraseña</li>
+    </ul>
+</li>
+</ul>
+
+//PLANTILLA DE LOS FORM VALIDATION
+{% if form.NOMBRE_PUESTO.errors %}
+<ul class="nav">
+    {% for error in form.NOMBRE_PUESTO.errors %}
+    <li class="nav-item pb-3">{{ error }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+'''
+def clean(self):
+nombre = self.cleaned_data['nombre']
+username = self.cleaned_data['username']
+correo = self.cleaned_data['correo']
+nacionalidad = self.cleaned_data['nacionalidad']
+cedula = self.cleaned_data['cedula']
+numero = self.cleaned_data['numero']
+password1 = self.cleaned_data['password1']
+clean_password2 = self.cleaned_data['password2']
+
+print("self self self")
+
+if not password1:
+raise forms.ValidationError(
+{'password1': ["Necesita escribir una contraseña"]})
+if not clean_password2:
+raise forms.ValidationError(
+{'password2': ["Necesita repetir la contraseña"]})
+if not password1 == clean_password2:
+raise forms.ValidationError(
+{'password1': ["Las contrasenañas no coinciden"]})
+
+if User.objects.filter(username=username).exists():
+raise forms.ValidationError(
+{'username': ["El usuario ya existe"]})
+if not username:
+raise forms.ValidationError(
+{'username': ["Necesita escribir un usuario"]})
+
+if not nombre:
+raise forms.ValidationError(
+{'nombre': ["Necesita escribir un nombre"]})
+
+if User.objects.filter(correo=correo).exists():
+raise forms.ValidationError(
+{'correo': ["Este correo ya ha sido elegido, intente otro"]})
+if not correo:
+raise forms.ValidationError(
+{'correo': ["Necesita escribir un correo"]})
+
+if not nacionalidad:
+raise forms.ValidationError(
+{'nacionalidad': ["Necesita elegir una nacionalidad"]})
+
+if User.objects.filter(cedula=cedula).exists():
+raise forms.ValidationError(
+{'cedula': ["Esta cédula ya ha sido elegida, intente otra"]})
+if not correo:
+raise forms.ValidationError(
+{'cedula': ["Necesita escribir una cédula"]})
+
+if not numero:
+raise forms.ValidationError(
+{'numero': ["Necesita escribir un número"]})
+
+return numero
+'''

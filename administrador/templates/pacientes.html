@@ -1,0 +1,326 @@
+<!-- Plantilla de la cabecera de página, no supe como hacerlo con html 
+así que transforme el archivo a PHP -->
+{% include "cabecera-administrador.html" %}
+
+<!-- Titulo de la página actual-->
+<h1 class="text-center border paginas-titulo border-dark rounded-3 p-2">
+    PACIENTES
+</h1>
+
+<!-- Espacio de línea -->
+<br>
+
+{% if error %}
+<ul class="nav pt-2">
+    <li class="nav-item"> {{error }}</li>
+</ul>
+{% endif %}
+
+<!-- DIV que encierre el agregar nuevo PACIENTE -->
+<div class="pacientes-container">
+
+    <label for="basic-url" class="form-label">Agregar Pacientes</label>
+
+    <!-- Formulario para agregar un nuevo PACIENTE-->
+    <form action="{% url 'pacientes' %}" method="post" class="needs-validation border rounded-3 p-2"
+        enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <!-- INPUTs que el usuario ingresará -->
+        <div class="row g-3 pacientes-inputs">
+
+            <!-- SELECT para seleccionar el REPRESENTANTE del PACIENTE-->
+            <div class="col-sm-3 position-relative">
+                <label class="form-label">Representante</label>
+                <select class="form-select" name="id_rep" required>
+                    {% if listaRepresentantes %}
+                    <option selected hidden value="">Elegir representante</option>
+                    {% for representante in listaRepresentantes %}
+                    <option value="{{ representante.id_rep }}">{{ representante.id_usu.nombre }}</option>
+                    {% endfor %}
+                    {% endif %}
+                </select>
+                <div class="invalid-tooltip">
+                    Es necesario elegir un representante
+                </div>
+            </div>
+
+            <!-- INPUT del nombre del PACIENTE-->
+            <div class="col-sm-3 position-relative">
+                <label class="form-label">Nombre</label>
+                <input type="text" class="form-control" placeholder="Ej: Manuel Jose"
+                    onkeypress="return SoloLetras(event);" onpaste="return false" minlength="3" maxlength="60"
+                    name="nombre_pac" required>
+                <!-- En caso de estar vacio se mostrará este mensaje -->
+                <div class="invalid-tooltip">
+                    Es necesario poner el nombre del PACIENTE
+                </div>
+            </div>
+
+            <!-- SELECT para seleccionar el GÉNERO del PACIENTE-->
+            <div class="col-sm-2 position-relative">
+                <label class="form-label">Género</label>
+                <select class="form-select genero-select" name="genero_pac" required>
+                    <option selected hidden value="">Elegir género</option>
+                    <option value="M">Masculino</option>
+                    <option value="F">Femenino</option>
+                </select>
+                <div class="invalid-tooltip">
+                    Es necesario elegir un género
+                </div>
+            </div>
+
+            <!-- INPUT de fecha del PACIENTE-->
+            <div class="col-sm-3 position-relative">
+                <label class="form-label">Fecha de Nacimiento</label>
+                <input type="date" name="nacimiento_pac" class="form-control" required>
+                <!-- En caso de estar vacio se mostrará este mensaje -->
+                <div class="invalid-tooltip">
+                    Es necesario elegir una fecha de nacimiento
+                </div>
+            </div>
+
+            <!-- Boton para enviar la información del formulario -->
+            <div class="col-12">
+                <!-- ENVIAR INFORMACION -->
+                <button type="submit" class="w-100 btn btn-primary btn-lg text-white">Añadir nuevo PACIENTE</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<!-- Espacio de línea -->
+<br>
+
+
+<div class="pacientes-container">
+    <div class="row pb-2">
+        <div class="col-12 d-flex">
+            <div class="col-3 text-start">
+                <label for="basic-url" class="form-label">Lista de Pacientes</label>
+            </div>
+            <div class="col-7"></div>
+            <div class="col-2">
+                <a name="" id="" class=" btn btn-primary w-100" href="{% url 'pdf_paciente' %}" role="button">PDF</a>
+            </div>
+        </div>
+    </div>
+    <!-- Borde redondo que marca donde empieza y dnde termina el div o tabla-->
+    <div class="border rounded-3 p-2">
+
+        <!-- Tabla con los pacientes con un hover que hace ver la tabla mas bonita-->
+        <table class="table table-hover ">
+            <thead>
+                <!-- Titulos de la página -->
+                <tr>
+                    <th scope="col">Nombre del PACIENTE</th>
+                    <th scope="col">Representante</th>
+                    <th scope="col">Fecha de Nacimiento</th>
+                    <th scope="col">Género</th>
+                    <th scope="col" class="text-center">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Contenido de la tabla-->
+                {% for paciente in listaPacientes %}
+
+                <tr>
+                    {% if listaPacientes %}
+                    <!-- Nombre del PACIENTE -->
+                    <td class="col-3">
+                        <p>{{ paciente.nombre_pac }}</p>
+                    </td>
+
+                    <!-- Representante -->
+                    <td class="col-3">
+                        <p>{{ paciente.id_rep.id_usu.nombre }}</p>
+                    </td>
+
+                    <!-- Fecha de Nacimiento -->
+                    <td class="col-2">
+                        <p>{{ paciente.nacimiento_pac }}</p>
+                    </td>
+
+                    <!-- Género -->
+                    <td class="col-2">
+                        <p>{{ paciente.genero_pac }}</p>
+
+                    </td>
+
+                    <!-- ICONOS en la opciones -->
+                    <td class=" col-md-3">
+                        <!-- Icono MODIFICAR cita -->
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                            data-bs-target="#updatePaciente{{ paciente.id_pac }}">
+                            <i class="fa-solid fa-user-pen"></i>
+                        </button>
+
+                        <!-- MODAL DE OPCIONES -->
+                        <!-- Modal -->
+                        <div class="modal fade" id="updatePaciente{{ paciente.id_pac }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modificar Datos del Paciente</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+
+                                    <!-- Formulario para agregar un nuevo PACIENTE-->
+                                    <form action="{% url 'pacientes' %}" method="POST"
+                                        class="needs-validation border rounded-3 p-2" enctype="multipart/form-data"
+                                        novalidate>
+                                        {% csrf_token %}
+
+                                        <div class="modal-body">
+                                            <div class="container-fluid p-0 m-0">
+
+                                                <!-- INPUTs que el usuario ingresará -->
+                                                <div class="row g-3 pacientes-inputs">
+
+                                                    <!-- SELECT para seleccionar el REPRESENTANTE del PACIENTE-->
+                                                    <div class="col-sm-6 position-relative">
+                                                        <label class="form-label">REPRESENTANTE del PACIENTE</label>
+                                                        <select class="form-select" name="id_rep" required>
+                                                            {% if listaRepresentantes %}
+                                                            <option selected hidden value="">Elegir representante
+                                                            </option>
+                                                            {% for representante in listaRepresentantes %}
+                                                            <option value="{{ representante.id_rep }}">
+                                                                {{ representante.id_usu.nombre }}</option>
+                                                            {% endfor %}
+                                                            {% endif %}
+                                                        </select>
+                                                        <div class="invalid-tooltip">
+                                                            Es necesario elegir un representante
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- INPUT del nombre del PACIENTE-->
+                                                    <div class="col-sm-6 position-relative">
+                                                        <label class="form-label">Nombre del PACIENTE</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Ej: Manuel Jose"
+                                                            onkeypress="return SoloLetras(event);"
+                                                            onpaste="return false" minlength="3" maxlength="60" required
+                                                            name="nombre_pac">
+                                                        <!-- En caso de estar vacio se mostrará este mensaje -->
+                                                        <div class="invalid-tooltip">
+                                                            Es necesario poner el nombre del PACIENTE
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- INPUT de la cédula del PACIENTE-->
+                                                    <div class="col-sm-6 position-relative">
+                                                        <label class="form-label">Género del PACIENTE</label>
+                                                        <select class="form-select" name="genero_pac" required>
+                                                            <option selected hidden value="">Elegir género</option>
+                                                            <option value="M">Masculino</option>
+                                                            <option value="F">Femenino</option>
+                                                        </select>
+                                                        <div class="invalid-tooltip">
+                                                            Es necesario elegir un género
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- INPUT de la teléfono del PACIENTE-->
+                                                    <div class="col-sm-6 position-relative">
+                                                        <label class="form-label">Fecha de Nacimiento del
+                                                            PACIENTE</label>
+                                                        <input type="date" name="nacimiento_pac" class="form-control"
+                                                            required>
+                                                        <!-- En caso de estar vacio se mostrará este mensaje -->
+                                                        <div class="invalid-tooltip">
+                                                            Es necesario poner la Fecha de Nacimiento del PACIENTE
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="hidden" name="id_pac" value="{{ paciente.id_pac }}">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Salir</button>
+                                            <button type="submit" name="btnUpdatePaciente"
+                                                class="btn btn-primary">Guardar Cambios</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Icono ELIMINAR cita -->
+
+                        <!-- IMPORTANTE el ID, si son diferentes no funciona, mediante Javascript o Python se tiene que ir modificando -->
+                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                            data-bs-target="#modelDeletePaciente{{ paciente.id_pac }}">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+
+                        <!-- MODAL DE OPCIONES -->
+                        <!-- Modal -->
+                        <!-- IMPORTANTE el ID, si son diferentes no funciona, mediante Javascript o Python se tiene que ir modificando -->
+                        <div class="modal fade" id="modelDeletePaciente{{ paciente.id_pac }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Eliminar Paciente</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label for="nombre" class="form-label pt-1">Nombre del paciente</label>
+                                        <input class="form-control pb-2" type="text" id="nombre"
+                                            placeholder="{{ paciente.nombre_pac }}" disabled>
+
+                                        <label for="representante" class="form-label pt-1">Nombre del
+                                            representante</label>
+                                        <input class="form-control pb-2" type="text" id="representante"
+                                            placeholder="{{ paciente.id_rep.id_usu.nombre }}" disabled>
+
+                                        <label for="nacimiento" class="form-label pt-1">Nacimiento del paciente</label>
+                                        <input class="form-control pb-2" type="text" id="nacimiento"
+                                            placeholder="{{ paciente.nacimiento_pac }}" disabled>
+
+                                        <label for="genero" class="form-label pt-1">Género del paciente</label>
+                                        <input class="form-control pb-2" type="text" id="genero"
+                                            placeholder="{{ paciente.genero_pac }}" disabled>
+
+                                        <p class="pt-1 p-0 m-0">¿Está seguro que desea eliminar a este paciente?</p>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="{% url 'pacientes' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id_pac" value="{{ paciente.id_pac }}">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Salir</button>
+                                            <button type="submit" name="btnDeletePaciente"
+                                                class="btn btn-danger">Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- Plantilla del pie de página -->
+{% include "pie.html" %}

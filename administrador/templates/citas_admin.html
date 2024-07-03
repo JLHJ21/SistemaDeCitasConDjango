@@ -1,0 +1,752 @@
+<!-- Plantilla de la cabecera de página, no supe como hacerlo con html 
+así que transforme el archivo a PHP -->
+{% include "cabecera-administrador.html" %}
+
+<!-- Titulo de la página actual-->
+<h1 class="text-center border border-dark p-3 paginas-titulo">
+    CITAS (ADMINISTRADOR)
+</h1>
+
+<!-- Línea superadora -->
+<hr />
+
+
+<h3 class="citas-h3">Citas sin Revisar</h3>
+{% if listaCitasPendientes %}
+<div class="container-fluid citas-admin-container border">
+    <table class="table ">
+        <thead>
+            <tr>
+                <th scope="col">Nombre Representante</th>
+                <th scope="col">Dia</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Lugar</th>
+                <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for revisar in listaCitasPendientes %}
+
+            <tr>
+                <td>{{ revisar.id_usu.nombre }}</td>
+                <td>{{ revisar.dia_cit }}</td>
+                <td>{{ revisar.id_hora.inicio_hora }} a {{ revisar.id_hora.final_hora }}</td>
+                <td>{{ revisar.id_lugar.nombre_lugar }}</td>
+                <!-- ICONOS en la opciones -->
+                <td class=" col-2">
+                    <div class="text-left">
+
+                        <!-- Icono MODIFICAR cita-->
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                            data-bs-target="#modalCitasRevisarAceptar{{ revisar.id_cit }}">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+
+                        <!-- MODAL DE OPCIONES
+                            Modal -->
+                        <div class="modal fade" id="modalCitasRevisarAceptar{{ revisar.id_cit }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Aceptar Cita</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <h5 class="text-center">Datos suministrados por el cliente</h5>
+
+                                        <div class="row g-3">
+
+                                            <!-- INPUT del nombre del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Nombre del cliente</label>
+                                                <input type="text" class="form-control"
+                                                    placeholder="{{ revisar.id_usu.nombre }}" disabled>
+                                            </div>
+
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Número del cliente</label>
+                                                <input type="text" class="form-control"
+                                                    placeholder="{{ revisar.id_usu.numero }}" disabled>
+                                            </div>
+
+                                            <!-- INPUT de la cédula del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Nombre del paciente</label>
+                                                {% if revisar.id_pac %}
+                                                <input type="text" class="form-control"
+                                                    placeholder="{{ revisar.id_pac.nombre_pac }}" disabled>
+                                                {% else %}
+                                                <input type="text" class="form-control"
+                                                    placeholder="Sin paciente vinculado" disabled>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- INPUT de la teléfono del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Dia de la Cita</label>
+                                                <input type="text" step="0.001" class="form-control"
+                                                    placeholder="{{ revisar.dia_cit }}" disabled>
+                                            </div>
+
+                                            <!-- INPUT de la teléfono del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Hora de la Cita</label>
+                                                <input type="text" step="0.001" class="form-control"
+                                                    placeholder="{{ revisar.id_hora.inicio_hora }} a {{ revisar.id_hora.final_hora }}"
+                                                    disabled>
+                                            </div>
+
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Lugar de la Cita</label>
+                                                <input type="text" step="0.001" class="form-control"
+                                                    placeholder="{{ revisar.id_lugar.ubicacion_lugar }}" disabled>
+                                            </div>
+
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Nota/Descripción del cliente</label>
+                                                <textarea class="form-control" disabled
+                                                    placeholder="{{ revisar.nota_cit }}"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="{% url 'citas_admin' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id_cit" value="{{ revisar.id_cit }}">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Salir</button>
+                                            <button type="submit" class="btn btn-primary"
+                                                name="btnRevisarAceptar">Aceptar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Icono ELIMINAR cita
+
+                            IMPORTANTE el ID, si son diferentes no funciona, mediante Javascript o Python se tiene que ir modificando-->
+                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                            data-bs-target="#modalCitasRevisarRechazar{{ revisar.id_cit }}">
+                            <i class="fa-solid fa-x"></i>
+                        </button>
+
+                        <!--MODAL DE OPCIONES
+                            Modal
+                            IMPORTANTE el ID, si son diferentes no funciona, mediante Javascript o Python se tiene que ir modificando-->
+                        <div class="modal fade" id="modalCitasRevisarRechazar{{ revisar.id_cit }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Rechazar Cita
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <h5 class="text-center">Datos suministrados por el cliente</h5>
+
+                                        <div class="row g-3">
+
+                                            <!-- INPUT del nombre del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Nombre del cliente</label>
+                                                <input type="text" class="form-control"
+                                                    placeholder="{{ revisar.id_usu.nombre }}" disabled>
+                                            </div>
+
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Número del cliente</label>
+                                                <input type="text" class="form-control"
+                                                    placeholder="{{ revisar.id_usu.numero }}" disabled>
+                                            </div>
+
+                                            <!-- INPUT de la cédula del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Nombre del paciente</label>
+                                                {% if revisar.id_pac %}
+                                                <input type="text" class="form-control"
+                                                    placeholder="{{ revisar.id_pac.nombre_pac }}" disabled>
+                                                {% else %}
+                                                <input type="text" class="form-control"
+                                                    placeholder="Sin paciente vinculado" disabled>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- INPUT de la teléfono del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Dia de la Cita</label>
+                                                <input type="text" step="0.001" class="form-control"
+                                                    placeholder="{{ revisar.dia_cit }}" disabled>
+                                            </div>
+
+                                            <!-- INPUT de la teléfono del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Hora de la Cita</label>
+                                                <input type="text" step="0.001" class="form-control"
+                                                    placeholder="{{ revisar.id_hora.inicio_hora }} a {{ revisar.id_hora.final_hora }}"
+                                                    disabled>
+                                            </div>
+
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Lugar de la Cita</label>
+                                                <input type="text" step="0.001" class="form-control"
+                                                    placeholder="{{ revisar.id_lugar.ubicacion_lugar }}" disabled>
+                                            </div>
+
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Nota/Descripción del cliente</label>
+                                                <textarea class="form-control" disabled
+                                                    placeholder="{{ revisar.nota_cit }}"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="{% url 'citas_admin' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id_cit" value="{{ revisar.id_cit }}">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Salir</button>
+                                            <button type="submit" class="btn btn-primary"
+                                                name="btnRevisarRechazar">Aceptar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+{% else %}
+
+<div class="container-fluid citas-admin-container border">
+    <table class="table ">
+        <thead>
+            <tr>
+                <th scope="col">Nombre Representante</th>
+                <th scope="col">Dia</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Lugar</th>
+                <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>No hay citas por revisar</td>
+                <td>No hay citas por revisar</td>
+                <td>No hay citas por revisar</td>
+                <td>No hay citas por revisar</td>
+                <!-- ICONOS en la opciones -->
+                <td class=" col-2">
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{% endif %}
+
+<br>
+
+<h3 class="citas-h3">Citas Aceptadas</h3>
+
+{% if listaCitasAceptadas %}
+
+<div class="container-fluid citas-admin-container border">
+    <table class="table ">
+        <thead>
+            <tr>
+                <th scope="col">Nombre Usuario</th>
+                <th scope="col">Dia</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Lugar</th>
+                <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for aceptada in listaCitasAceptadas %}
+
+            <tr>
+                <td>{{ aceptada.id_usu.nombre }}</td>
+                <td>{{ aceptada.dia_cit }}</td>
+                <td>{{ aceptada.id_hora.inicio_hora }} a {{ aceptada.id_hora.final_hora }}</td>
+                <td>{{ aceptada.id_lugar.nombre_lugar }}</td>
+                <!-- ICONOS en la opciones -->
+                <td class=" col-2">
+                    <div class="text-left">
+
+                        <!-- Icono ELIMINAR cita -->
+
+                        <!-- IMPORTANTE el ID, si son diferentes no funciona, mediante Javascript o Python se tiene que ir modificando -->
+                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                            data-bs-target="#modalCitasAceptadasRechazar{{ aceptada.id_cit }}">
+                            <i class="fa-solid fa-x"></i>
+                        </button>
+
+                        <!-- MODAL DE OPCIONES -->
+                        <!-- Modal -->
+                        <!-- IMPORTANTE el ID, si son diferentes no funciona, mediante Javascript o Python se tiene que ir modificando -->
+                        <div class="modal fade" id="modalCitasAceptadasRechazar{{ aceptada.id_cit }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Rechazar Cita ACEPTADA</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <h5 class="text-center">Datos suministrados por el cliente</h5>
+
+                                        <div class="row g-3">
+
+                                            <!-- INPUT del nombre del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Nombre del cliente</label>
+                                                <input type="text" class="form-control"
+                                                    placeholder="Ej: {{ aceptada.id_usu.nombre }}" disabled>
+                                            </div>
+
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Número del cliente</label>
+                                                <input type="text" class="form-control"
+                                                    placeholder="{{ aceptada.id_usu.numero }}" disabled>
+                                            </div>
+
+                                            <!-- INPUT de la cédula del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Nombre del paciente</label>
+                                                {% if aceptada.id_pac %}
+                                                <input type="text" class="form-control"
+                                                    placeholder="{{ aceptada.id_pac.nombre_pac }}" disabled>
+                                                {% else %}
+                                                <input type="text" class="form-control"
+                                                    placeholder="Sin paciente vinculado" disabled>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- INPUT de la teléfono del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Dia de la Cita</label>
+                                                <input type="text" step="0.001" class="form-control"
+                                                    placeholder="{{ aceptada.dia_cit }}" disabled>
+                                            </div>
+
+                                            <!-- INPUT de la teléfono del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Hora de la Cita</label>
+                                                <input type="text" step="0.001" class="form-control"
+                                                    placeholder="{{ aceptada.id_hora.inicio_hora }} a {{ aceptada.id_hora.final_hora }}"
+                                                    disabled>
+                                            </div>
+
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Lugar de la Cita</label>
+                                                <input type="text" step="0.001" class="form-control"
+                                                    placeholder="{{ aceptada.id_lugar.ubicacion_lugar }}" disabled>
+                                            </div>
+
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Nota/Descripción del cliente</label>
+                                                <textarea class="form-control" disabled
+                                                    placeholder="{{ aceptada.nota_cit }}"></textarea>
+                                            </div>
+                                        </div>
+
+
+                                        <p class="text-center pt-2 m-0"> ¿Está seguro que desea RECHAZAR ESTA CITA A
+                                            PESAR DE HABERLA ACEPTADO ANTERIORMENTE?
+                                        </p>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="{% url 'citas_admin' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id_cit" value="{{ aceptada.id_cit }}">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Salir</button>
+                                            <button type="submit" class="btn btn-danger"
+                                                name="btnAceptadaRechazar">Rechazar</button>
+                                        </form>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+</div>
+
+{% else %}
+<div class="container-fluid citas-admin-container border">
+    <table class="table ">
+        <thead>
+            <tr>
+                <th scope="col">Nombre Representante</th>
+                <th scope="col">Dia</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Lugar</th>
+                <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>No hay citas aceptadas</td>
+                <td>No hay citas aceptadas</td>
+                <td>No hay citas aceptadas</td>
+                <td>No hay citas aceptadas</td>
+                <!-- ICONOS en la opciones -->
+                <td class=" col-2">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+{% endif %}
+
+<br>
+
+<h3 class="citas-h3">Citas Rechazadas</h3>
+
+{% if listaCitasRechazadas %}
+<div class="container-fluid citas-admin-container border">
+    <table class="table ">
+        <thead>
+            <tr>
+                <th scope="col">Nombre Representante</th>
+                <th scope="col">Dia</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Lugar</th>
+                <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rechazada in listaCitasRechazadas %}
+
+            <tr>
+                <td>{{ rechazada.id_usu.nombre }}</td>
+                <td>{{ rechazada.dia_cit }}</td>
+                <td>{{ rechazada.id_hora.inicio_hora }} a {{ rechazada.id_hora.final_hora }}</td>
+                <td>{{ rechazada.id_lugar.nombre_lugar }}</td>
+                <td class=" col-2">
+                    <div class="text-left">
+
+                        <!-- Icono MODIFICAR cita-->
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                            data-bs-target="#modalCitasRechazadasAceptar{{ rechazada.id_cit }}">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+
+                        <!-- MODAL DE OPCIONES
+                            Modal -->
+                        <div class="modal fade" id="modalCitasRechazadasAceptar{{ rechazada.id_cit }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Aceptar Cita Rechazada</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <h5 class="text-center">Datos suministrados por el cliente</h5>
+
+                                        <div class="row g-3">
+
+                                            <!-- INPUT del nombre del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Nombre del cliente</label>
+                                                <input type="text" class="form-control"
+                                                    placeholder="{{ rechazada.id_usu.nombre }}" disabled>
+                                            </div>
+
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Número del cliente</label>
+                                                <input type="text" class="form-control"
+                                                    placeholder="{{ rechazada.id_usu.numero }}" disabled>
+                                            </div>
+
+                                            <!-- INPUT de la cédula del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Nombre del paciente</label>
+                                                {% if rechazada.id_pac %}
+                                                <input type="text" class="form-control"
+                                                    placeholder="{{ rechazada.id_pac.nombre_pac }}" disabled>
+                                                {% else %}
+                                                <input type="text" class="form-control"
+                                                    placeholder="Sin paciente vinculado" disabled>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- INPUT de la teléfono del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Dia de la Cita</label>
+                                                <input type="text" step="0.001" class="form-control"
+                                                    placeholder="{{ rechazada.dia_cit }}" disabled>
+                                            </div>
+
+                                            <!-- INPUT de la teléfono del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Hora de la Cita</label>
+                                                <input type="text" step="0.001" class="form-control"
+                                                    placeholder="{{ rechazada.id_hora.inicio_hora }} a {{ rechazada.id_hora.final_hora }}"
+                                                    disabled>
+                                            </div>
+
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Lugar de la Cita</label>
+                                                <input type="text" step="0.001" class="form-control"
+                                                    placeholder="{{ rechazada.id_lugar.ubicacion_lugar }}" disabled>
+                                            </div>
+
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Nota/Descripción del cliente</label>
+                                                <textarea class="form-control" disabled
+                                                    placeholder="{{ rechazada.nota_cit }}"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="{% url 'citas_admin' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id_cit" value="{{ rechazada.id_cit }}">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Salir</button>
+                                            <button type="submit" class="btn btn-primary"
+                                                name="btnRechazarAceptar">Aceptar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Icono ELIMINAR cita
+
+                            IMPORTANTE el ID, si son diferentes no funciona, mediante Javascript o Python se tiene que ir modificando-->
+                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                            data-bs-target="#modalCitasRechazadasEliminar{{ rechazada.id_cit }}">
+                            <i class="fa-solid fa-x"></i>
+                        </button>
+
+                        <!--MODAL DE OPCIONES
+                            Modal
+                            IMPORTANTE el ID, si son diferentes no funciona, mediante Javascript o Python se tiene que ir modificando-->
+                        <div class="modal fade" id="modalCitasRechazadasEliminar{{ rechazada.id_cit }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Eliminar Cita PERMANENTEMENTE
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <h5 class="text-center">Datos suministrados por el cliente</h5>
+
+                                        <div class="row g-3">
+
+                                            <!-- INPUT del nombre del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Nombre del cliente</label>
+                                                <input type="text" class="form-control"
+                                                    placeholder="{{ rechazada.id_usu.nombre }}" disabled>
+                                            </div>
+
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Número del cliente</label>
+                                                <input type="text" class="form-control"
+                                                    placeholder="{{ rechazada.id_usu.numero }}" disabled>
+                                            </div>
+
+                                            <!-- INPUT de la cédula del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Nombre del paciente</label>
+                                                {% if rechazada.id_pac %}
+                                                <input type="text" class="form-control"
+                                                    placeholder="{{ rechazada.id_pac.nombre_pac }}" disabled>
+                                                {% else %}
+                                                <input type="text" class="form-control"
+                                                    placeholder="Sin paciente vinculado" disabled>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- INPUT de la teléfono del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Dia de la Cita</label>
+                                                <input type="text" step="0.001" class="form-control"
+                                                    placeholder="{{ rechazada.dia_cit }}" disabled>
+                                            </div>
+
+                                            <!-- INPUT de la teléfono del REPRESENTANTE-->
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Hora de la Cita</label>
+                                                <input type="text" step="0.001" class="form-control"
+                                                    placeholder="{{ rechazada.id_hora.inicio_hora }} a {{ rechazada.id_hora.final_hora }}"
+                                                    disabled>
+                                            </div>
+
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Lugar de la Cita</label>
+                                                <input type="text" step="0.001" class="form-control"
+                                                    placeholder="{{ rechazada.id_lugar.ubicacion_lugar }}" disabled>
+                                            </div>
+
+                                            <div class="col-sm-6 position-relative">
+                                                <label class="form-label">Nota/Descripción del cliente</label>
+                                                <textarea class="form-control" disabled
+                                                    placeholder="{{ rechazada.nota_cit }}"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="{% url 'citas_admin' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id_cit" value="{{ rechazada.id_cit }}">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Salir</button>
+                                            <button type="submit" class="btn btn-primary"
+                                                name="btnRechazarEliminar">Aceptar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+</div>
+{% else %}
+<div class="container-fluid citas-admin-container border">
+    <table class="table ">
+        <thead>
+            <tr>
+                <th scope="col">Nombre Representante</th>
+                <th scope="col">Dia</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Lugar</th>
+                <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>No hay citas rechazadas</td>
+                <td>No hay citas rechazadas</td>
+                <td>No hay citas rechazadas</td>
+                <td>No hay citas rechazadas</td>
+                <td class="col-2"></td>
+
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+{% endif %}
+
+<br>
+
+<div class="row">
+    <div class="col-12 d-flex">
+        <div class="col-3 text-start">
+
+            <h3 class="citas-h3">Citas Realizadas</h3>
+
+        </div>
+
+        <div class="col-7"></div>
+
+        <div class="col-2 text-end m-1 pb-1">
+            <a name="" id="" class=" btn btn-primary w-100" href="{% url 'pdf_citas' %}" role="button">PDF</a>
+        </div>
+    </div>
+</div>
+
+{% if listaCitasRealizadas %}
+<div class="container-fluid citas-admin-container border">
+    <table class="table ">
+        <thead>
+            <tr>
+                <th scope="col">Nombre Representante</th>
+                <th scope="col">Dia</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Lugar</th>
+                <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for realizada in listaCitasRealizadas %}
+
+            <tr>
+                <td>{{ realizada.id_usu.nombre }}</td>
+                <td>{{ realizada.dia_cit }}</td>
+                <td>{{ realizada.id_hora.inicio_hora }} a {{ realizada.id_hora.final_hora }}</td>
+                <td>{{ realizada.id_lugar.nombre_lugar }}</td>
+                <td></td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+</div>
+{% else %}
+<div class="container-fluid citas-admin-container border">
+    <table class="table ">
+        <thead>
+            <tr>
+                <th scope="col">Nombre Representante</th>
+                <th scope="col">Dia</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Lugar</th>
+                <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>No hay citas realizadas</td>
+                <td>No hay citas realizadas</td>
+                <td>No hay citas realizadas</td>
+                <td>No hay citas realizadas</td>
+                <td class="col-2"></td>
+
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+{% endif %}
+
+<!-- Plantilla del pie de página -->
+{% include "pie.html" %}

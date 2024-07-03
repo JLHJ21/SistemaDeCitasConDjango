@@ -1,0 +1,537 @@
+<!-- Plantilla de la cabecera de página, no supe como hacerlo con html 
+así que transforme el archivo a PHP -->
+{% include "cabecera-usuario.html" %}
+
+<!-- Titulo de la página actual-->
+<div class="border paginas-titulo border-warning rounded-3">
+    <h1 class="text-center">
+        <bold>CONFIGURACION</bold>
+    </h1>
+</div>
+
+<br>
+
+<div class="error">
+    {% if form.username.errors %}
+    <ul class="nav pt-2">
+        {% for error in form.username.errors %}
+        <li class="nav-item"> {{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if form.nacionalidad.errors %}
+    <ul class="nav pt-2">
+        {% for error in form.nacionalidad.errors %}
+        <li class="nav-item"> {{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if form.cedula.errors %}
+    <ul class="nav pt-2">
+        {% for error in form.cedula.errors %}
+        <li class="nav-item"> {{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if form.numero.errors %}
+    <ul class="nav pt-2">
+        {% for error in form.numero.errors %}
+        <li class="nav-item"> {{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if form.correo.errors %}
+    <ul class="nav pt-2">
+        {% for error in form.correo.errors %}
+        <li class="nav-item"> {{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if form.password1.errors %}
+    <ul class="nav pt-2">
+        {% for error in form.password1.errors %}
+        <li class="nav-item"> {{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if form.password2.errors %}
+    <ul class="nav pt-2">
+        {% for error in form.password2.errors %}
+        <li class="nav-item"> {{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
+
+
+
+<!-- DIV que encierra el acordion, mostrando un borde (border) -->
+<div class="border pb-3 configuracion-usuario-container">
+    <!-- DIV que permite tener varios acordiones a la vez -->
+    <div class="accordion active" id="accordionExample">
+        <!-- DIV del primer acordion CAMBIAR DATOS DE USUARIO -->
+        <div class="accordion-item">
+            <!-- Datos del boton que expande el acordion (PALABRAS EN ROJO) -->
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
+                    <h5 class="text-danger">Configuración de Datos de la Cuenta</h5>
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+
+                    <!-- Input para cambiar el NOMBRE DE USUARIO -->
+                    <div class="row">
+                        <div class="col-4">
+                            <lavel>
+                                <h5 class="m-0">Cambiar nombre de usuario: </h5>
+                            </lavel>
+                        </div>
+                        <!-- En caso de dejar este input vacío aparecerá este aviso, cancelando el envio de datos -->
+                        <div class="col-5 position-relative">
+                            <div class="usuario">
+                                <!-- Button trigger modal Usuario -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#cambiarUsuario">
+                                    Cambiar Usuario
+                                </button>
+
+                                <!-- Modal de Usuario -->
+                                <div class="modal fade" id="cambiarUsuario">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Cambiar usuario
+                                                </h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+
+                                            <form action="{% url 'configuracion' %}" method="post"
+                                                class="needs-validation" enctype="multipart/form-data" novalidate>
+                                                {% csrf_token %}
+
+                                                <div class="modal-body">
+                                                    <label for="username" class="form-label">Usuario</label>
+                                                    {{ form.username }}
+                                                    <div class="invalid-tooltip">
+                                                        Es necesario ingresar un nombre de usuario
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" name="btnUsuario"
+                                                        class="btn btn-primary">Guardar</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Línea separadora -->
+                    <hr>
+
+                    <!-- Input para cambiar el NOMBRE DE USUARIO -->
+                    <div class="row cedula-config-div">
+                        <div class="col-4">
+                            <lavel>
+                                <h5 class="m-0">Cambiar CEDULA de usuario: </h5>
+                            </lavel>
+                        </div>
+                        <!-- En caso de dejar este input vacío aparecerá este aviso, cancelando el envio de datos -->
+                        <div class="col-5 position-relative">
+                            <div class="cedula">
+                                <!-- Button trigger modal Cedula -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#cambiarCedula">
+                                    Cambiar Cédula
+                                </button>
+
+                                <!-- Modal de Cedula -->
+                                <div class="modal fade" id="cambiarCedula">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Cambiar cédula
+                                                </h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <form action="{% url 'configuracion' %}" method="post"
+                                                class="needs-validation" enctype="multipart/form-data" novalidate>
+                                                {% csrf_token %}
+
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <label for="nacionalidad"
+                                                                class="form-label">Nacionalidad</label>
+                                                            {{form.nacionalidad}}
+
+
+                                                        </div>
+                                                        <div class="col-9">
+                                                            <label for="cedula" class="form-label">
+                                                                Cédula
+                                                            </label>
+                                                            {{ form.cedula }}
+                                                            <div class="invalid-tooltip">
+                                                                Es necesario ingresar una cédula
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" name="btnCedula"
+                                                        class="btn btn-primary">Guardar</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Línea separadora -->
+                    <hr>
+
+                    <!-- Input para cambiar el NOMBRE DE USUARIO -->
+                    <div class="row">
+                        <div class="col-4">
+                            <lavel>
+                                <h5 class="m-0">Cambiar TELEFONO de usuario: </h5>
+                            </lavel>
+                        </div>
+                        <!-- En caso de dejar este input vacío aparecerá este aviso, cancelando el envio de datos -->
+                        <div class="col-5 position-relative">
+                            <div class="telefono">
+                                <!-- Button trigger modal Usuario -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#cambiarTelefono">
+                                    Cambiar Teléfono
+                                </button>
+
+                                <!-- Modal de Usuario -->
+                                <div class="modal fade" id="cambiarTelefono">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Cambiar teléfono
+                                                </h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <form action="{% url 'configuracion' %}" method="post"
+                                                class="needs-validation" enctype="multipart/form-data" novalidate>
+                                                {% csrf_token %}
+
+                                                <div class="modal-body">
+                                                    <label for="numero" class="form-label">Teléfono</label>
+                                                    {{ form.numero }}
+                                                    <div class="invalid-tooltip">
+                                                        Es necesario ingresar un número de teléfono
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" name="btnTelefono"
+                                                        class="btn btn-primary">Guardar</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Línea separadora -->
+                    <hr>
+
+                    <!-- Input para cambiar el NOMBRE DE USUARIO -->
+                    <div class="row">
+                        <div class="col-4">
+                            <lavel>
+                                <h5 class="m-0">Cambiar CORREO ELECTRONICO de usuario: </h5>
+                            </lavel>
+                        </div>
+                        <!-- En caso de dejar este input vacío aparecerá este aviso, cancelando el envio de datos -->
+                        <div class="col-5 position-relative">
+                            <div class="correo">
+                                <!-- Button trigger modal Usuario -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#cambiarCorreo">
+                                    Cambiar Correo Electrónico
+                                </button>
+
+                                <!-- Modal de Usuario -->
+                                <div class="modal fade" id="cambiarCorreo">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Cambiar correo
+                                                    electrónico</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <form action="{% url 'configuracion' %}" method="post"
+                                                class="needs-validation" enctype="multipart/form-data" novalidate>
+                                                {% csrf_token %}
+
+                                                <div class="modal-body">
+                                                    <label for="correo" class="form-label">Correo
+                                                        Electrónico</label>
+                                                    {{form.correo}}
+                                                    <div class="invalid-tooltip">
+                                                        Es necesario ingresar un correo electrónico
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" name="btnCorreo"
+                                                        class="btn btn-primary">Guardar</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Línea separadora -->
+                    <hr>
+
+                    <!-- Input para escribir nueva contraseña -->
+                    <div class="row">
+                        <div class="col-4">
+                            <lavel>
+                                <h5 class="m-0">Cambiar CONTRASEÑA: </h5>
+                            </lavel>
+                        </div>
+                        <!-- En caso de dejar este input vacío aparecerá este aviso, cancelando el envio de datos -->
+                        <div class="col-5 position-relative">
+
+                            <div class="contrasenna">
+                                <!-- Button trigger modal Usuario -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#cambiarContrasenna">
+                                    Cambiar Contraseña
+                                </button>
+
+                                <!-- Modal de Usuario -->
+                                <div class="modal fade" id="cambiarContrasenna">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Cambiar
+                                                    contraseña actual</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <form action="{% url 'configuracion' %}" method="post"
+                                                class="needs-validation" enctype="multipart/form-data" novalidate>
+                                                {% csrf_token %}
+
+                                                <div class="modal-body">
+                                                    <div class="input-group mb-3 position-relative">
+                                                        <div class="col-12">
+                                                            <label for="password1" class="form-label">Contraseña</label>
+                                                            {{form.password1}}
+                                                            <div class="invalid-tooltip">
+                                                                Es necesario ingresar una contraseña
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-group mb-3 position-relative">
+                                                        <div class="col-12">
+                                                            <label for="password2" class="form-label pt-2">Repetir
+                                                                Contraseña</label>
+                                                            {{form.password2}}
+                                                            <div class="invalid-tooltip">
+                                                                Es necesario repetir la contraseña
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" name="btnContrasenna"
+                                                        class="btn btn-primary">Guardar</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Línea separadora -->
+                    <hr>
+                    <!-- Input para escribir nueva contraseña -->
+                    <div class="row">
+                        <div class="col-4">
+                            <lavel>
+                                <h5 class="m-0">Cambiar todos los datos: </h5>
+                            </lavel>
+                        </div>
+                        <!-- En caso de dejar este input vacío aparecerá este aviso, cancelando el envio de datos -->
+                        <div class="col-5 position-relative">
+
+
+                            <div class="all">
+                                <!-- Button trigger modal Usuario -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#cambiarAll">
+                                    Cambiar Todos los Datos
+                                </button>
+
+                                <!-- Modal de Usuario -->
+                                <div class="modal fade" id="cambiarAll">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Cambiar todos
+                                                    los datos</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <form action="{% url 'configuracion' %}" method="post"
+                                                class="needs-validation" enctype="multipart/form-data" novalidate>
+                                                {% csrf_token %}
+
+                                                <div class="modal-body">
+
+                                                    <h6 class="text-center">Al cambiar los datos éxitosamente, se
+                                                        le redireccionará a la página de 'Iniciar Sesión'.</h6>
+
+                                                    <div class="row">
+                                                        <div class="input-group mb-3 position-relative">
+                                                            <div class="col-12">
+
+                                                                <label for="username" class="form-label">Nombre de
+                                                                    Usuario</label>
+                                                                {{ form.username }}
+                                                                <div class="invalid-tooltip">
+                                                                    Es necesario escribir un nombre de usuario
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="input-group mb-3 position-relative">
+
+                                                            <div class="col-12">
+                                                                <label for="cedula"
+                                                                    class="form-label pt-2">Cédula</label>
+                                                                {{ form.cedula }}
+                                                                <div class="invalid-tooltip">
+                                                                    Es necesario escribir una cédula de identidad
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="input-group mb-3 position-relative">
+
+                                                            <div class="col-12">
+                                                                <label for="numero"
+                                                                    class="form-label pt-2">Teléfono</label>
+                                                                {{ form.numero }}
+                                                                <div class="invalid-tooltip">
+                                                                    Es necesario escribir un número de telefóno
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="input-group mb-3 position-relative">
+
+                                                            <div class="col-12">
+                                                                <label for="correo" class="form-label pt-2">Correo
+                                                                    Electrónico</label>
+                                                                {{ form.correo }}
+                                                                <div class="invalid-tooltip">
+                                                                    Es necesario escribir un correo
+                                                                    electrónico
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="input-group mb-3 position-relative">
+
+                                                            <div class="col-12">
+                                                                <label for="password1"
+                                                                    class="form-label pt-2">Contraseña</label>
+                                                                {{ form.password1 }}
+                                                                <div class="invalid-tooltip">
+                                                                    Es necesario escribir una contraseña
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="input-group mb-3 position-relative">
+                                                            <div class="col-12">
+                                                                <label for="password2" class="form-label pt-2">Repetir
+                                                                    Contraseña</label>
+                                                                {{ form.password2 }}
+                                                                <div class="invalid-tooltip">
+                                                                    Es necesario repetir la contraseña
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" name="btnAll"
+                                                        class="btn btn-primary">Guardar</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Plantilla del pie de página -->
+{% include "pie.html" %}

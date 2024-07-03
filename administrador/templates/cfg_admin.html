@@ -1,0 +1,180 @@
+<!-- Plantilla de la cabecera de página, no supe como hacerlo con html 
+así que transforme el archivo a PHP -->
+{% include "cabecera-administrador.html" %}
+
+<!-- Titulo de la página actual-->
+<div class="border paginas-titulo border-warning rounded-3">
+    <h1 class="text-center">
+        <bold>CONFIGURACION</bold>
+    </h1>
+</div>
+
+<br>
+
+<!-- DIV que encierra el acordion, mostrando un borde (border) -->
+<div class="border pb-3 configuracion-usuario-container">
+    <!-- DIV que permite tener varios acordiones a la vez -->
+    <div class="accordion" id="accordionExample">
+        <!-- DIV del primer acordion CAMBIAR DATOS DE USUARIO -->
+        <div class="accordion-item">
+            <!-- Datos del boton que expande el acordion (PALABRAS EN ROJO) -->
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
+                    <h5 class="text-danger">Configuración de Usuario (USUARIO)</h5>
+                </button>
+            </h2>
+
+            <!-- Formulario donde irian los datos para cambiar los datos de usuario -->
+            <form action="/" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+
+                        <!-- Input para cambiar el NOMBRE DE USUARIO -->
+                        <div class="row">
+                            <div class="col-4">
+                                <lavel>
+                                    <h5 class="m-0">Cambiar nombre de usuario: </h5>
+                                </lavel>
+                            </div>
+                            <!-- En caso de dejar este input vacío aparecerá este aviso, cancelando el envio de datos -->
+                            <div class="col-5 position-relative">
+                                <input type="text" class="p-1 form-control form-control-sm"
+                                    placeholder="Ej: xXjuanito_perezXx"
+                                    onkeypress="return SoloLetrasYNumerosYGuiones(event);" onpaste="return false"
+                                    minlength="3" maxlength="30" required>
+                                <div class="invalid-tooltip">
+                                    Es necesario poner un nuevo nombre de usuario
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Línea separadora -->
+                        <hr>
+
+                        <!-- Input para cambiar el NOMBRE DE USUARIO -->
+                        <div class="row cedula-config-div">
+                            <div class="col-4">
+                                <lavel>
+                                    <h5 class="m-0">Cambiar CEDULA de usuario: </h5>
+                                </lavel>
+                            </div>
+                            <!-- En caso de dejar este input vacío aparecerá este aviso, cancelando el envio de datos -->
+                            <div class="col-2">
+                                <select class="form-select">
+                                    <option value="" selected>V-</option>
+                                    <option value="">E-</option>
+                                </select>
+                            </div>
+                            <div class="col-5 position-relative">
+                                <input type="text" class="p-1 form-control form-control-sm"
+                                    placeholder="Ej: xXjuanito_perezXx" onkeypress="return SoloNumeros(event);"
+                                    onpaste="return false" minlength="3" maxlength="20" required>
+                                <div class="invalid-tooltip">
+                                    Es necesario poner una nueva CEDULA
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Línea separadora -->
+                        <hr>
+
+                        <!-- Input para cambiar el NOMBRE DE USUARIO -->
+                        <div class="row">
+                            <div class="col-4">
+                                <lavel>
+                                    <h5 class="m-0">Cambiar TELEFONO de usuario: </h5>
+                                </lavel>
+                            </div>
+                            <!-- En caso de dejar este input vacío aparecerá este aviso, cancelando el envio de datos -->
+                            <div class="col-5 position-relative">
+                                <input type="text" class="p-1 form-control form-control-sm"
+                                    placeholder="Ej: xXjuanito_perezXx" onkeypress="return SoloNumeros(event);"
+                                    onpaste="return false" minlength="3" maxlength="20" required>
+                                <div class="invalid-tooltip">
+                                    Es necesario poner un nuevo número de TELÉFONO
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Línea separadora -->
+                        <hr>
+
+                        <!-- Input para cambiar el NOMBRE DE USUARIO -->
+                        <div class="row">
+                            <div class="col-4">
+                                <lavel>
+                                    <h5 class="m-0">Cambiar CORREO ELECTRONICO de usuario: </h5>
+                                </lavel>
+                            </div>
+                            <!-- En caso de dejar este input vacío aparecerá este aviso, cancelando el envio de datos -->
+                            <div class="col-5 position-relative">
+                                <input type="text" class="p-1 form-control form-control-sm"
+                                    placeholder="Ej: xXjuanito_perezXx" onkeypress="return SoloCorreo(event);"
+                                    onpaste="return false" minlength="3" maxlength="50" required>
+                                <div class="invalid-tooltip">
+                                    Es necesario poner un nuevo CORREO ELECTRONICO
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Línea separadora -->
+                        <hr>
+
+                        <!-- Input para escribir nueva contraseña -->
+                        <div class="row">
+                            <div class="col-4">
+                                <lavel>
+                                    <h5 class="m-0">Escribir nueva contraseña: </h5>
+                                </lavel>
+                            </div>
+                            <!-- En caso de dejar este input vacío aparecerá este aviso, cancelando el envio de datos -->
+                            <div class="col-5 position-relative">
+                                <input type="password" class="p-1 form-control form-control-sm" placeholder="Ej: 1999"
+                                    onkeypress="return SoloLetrasYNumerosYGuiones(event);" onpaste="return false"
+                                    minlength="3" required>
+                                <div class="invalid-tooltip">
+                                    Es necesario poner una nueva contraseña
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Línea separadora -->
+                        <hr>
+
+                        <!-- Input para repetir la nueva contraseña que se desea -->
+                        <div class="row pb-2">
+                            <div class="col-4">
+                                <lavel>
+                                    <h5 class="m-0">Repetir la nueva contraseña: </h5>
+                                </lavel>
+                            </div>
+                            <!-- En caso de dejar este input vacío aparecerá este aviso, cancelando el envio de datos -->
+                            <div class="col-5 position-relative">
+                                <input type="password" class="p-1 form-control form-control-sm" placeholder="Ej: 1999"
+                                    onkeypress="return SoloLetrasYNumerosYGuiones(event);" onpaste="return false"
+                                    minlength="3" required>
+                                <div class="invalid-tooltip">
+                                    Es necesario que ambas contraseñas sean iguales
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Línea separadora -->
+                        <hr>
+
+                        <!-- Input submit que funciona como boton para enviar los datos del formulario-->
+                        <div class="col-12 pt-1">
+                            <input type="submit" class="w-100 btn btn-primary" value="Enviar">
+                        </div>
+                    </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<!-- Plantilla del pie de página -->
+{% include "pie.html" %}

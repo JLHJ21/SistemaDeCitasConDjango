@@ -1,0 +1,242 @@
+<!-- Plantilla de la cabecera de página, no supe como hacerlo con html 
+así que transforme el archivo a PHP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+{% include "cabecera-administrador.html" %}
+
+<!--
+<style>
+    .div_select_cita {
+        display: block;
+    }
+</style>-->
+<!-- Titulo de la página actual-->
+<h1 class="text-center border border-dark p-3 paginas-titulo">
+    CONSULTA EN EJECUCIÓN
+</h1>
+
+<!-- Línea superadora -->
+<hr />
+{% for cita in citaSelect %}
+{% if cita.id_pac %}
+<h3 class="consultorio-h3">Cita en Proceso para {{ cita.id_pac.nombre_pac }} </h3>
+{% else %}
+<h3 class="consultorio-h3">Cita en Proceso para paciente, por primera vez </h3>
+{% endif %}
+<div class="container-fluid consultorio-container border">
+    <form action="{% url 'consultorio_cita' %}" class="needs-validation" method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="row consultorio-inputs">
+
+            <div class="row div_select_cita" id="div_select_cita{{ cita.id_cit }}">
+
+                <input type="hidden" name="id_cit" value="{{ cita.id_cit }}">
+                <div class="col-6 mt-3">
+
+                    <label class="form-label">Lugar de la cita</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="{{ cita.id_lugar.ubicacion_lugar }}"
+                            disabled>
+
+                    </div>
+
+                    <label class="form-label">Motivo de la Cita</label>
+                    <div class="input-group mb-3">
+                        <textarea class="form-control" placeholder="{{ cita.nota_cit }}" disabled></textarea>
+                    </div>
+
+                </div>
+
+                <div class="col-6 mt-3">
+
+                    <div class="col-12 d-flex">
+                        <div class="col-5">
+                            <label class="form-label">Edad del paciente</label>
+                            <div class="input-group mb-3">
+                                {% if cita.id_pac.nacimiento_pac %}
+                                <input type="hidden" name="nacimiento_hidden" id="nacimiento_hidden"
+                                    value="{{ cita.id_pac.nacimiento_pac }}">
+                                {% else %}
+                                <input type="hidden" name="nacimiento_hidden" value="nada">
+                                {% endif %}
+
+                                <input type="text" class="form-control" placeholder="" disabled name="nacimiento_pac"
+                                    id="nacimiento_pac">
+                            </div>
+                        </div>
+                        <div class="col-2"></div>
+                        <div class="col-5">
+                            <label class="form-label">Peso del paciente</label>
+                            <div class="input-group mb-3">
+                                <input name="peso_con" type="text" class="form-control"
+                                    onkeypress="return SoloNumeros(event);" onpaste="return false" minlength="1"
+                                    maxlength="10" required>
+                                <div class="invalid-tooltip">
+                                    Es necesario escribir el peso del paciente
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 d-flex">
+                        <div class="col-5">
+                            <label class="form-label">Nombre del paciente</label>
+                            <div class="input-group mb-3">
+                                <input name="peso_con" type="text" class="form-control"
+                                    placeholder="{{ cita.id_pac.nombre_pac }}" disabled>
+                            </div>
+                        </div>
+                        <div class="col-2"></div>
+                        <div class="col-5">
+                            <label class="form-label">Altura del paciente</label>
+                            <div class="input-group mb-3">
+                                <input name="altura_con" type="text" class="form-control"
+                                    onkeypress="return SoloNumeros(event);" onpaste="return false" minlength="1"
+                                    maxlength="10" required>
+                                <div class="invalid-tooltip">
+                                    Es necesario escribir la altura del paciente
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-8 mb-3">
+                    <label class="form-label">Notas/Observaciones</label>
+
+                    <div class="input-group">
+                        <textarea name="nota_con" class="form-control" aria-label="With textarea"
+                            onkeypress="return SoloCorreo(event);" onpaste="return false" minlength="3" maxlength="100"
+                            required></textarea>
+                        <div class="invalid-tooltip">
+                            Es necesario escribir alguna observacion.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <div class="row d-flex">
+            <div class="col-2"></div>
+            <div class="col-8 d-flex mb-3 ">
+                <!-- ENVIAR INFORMACION -->
+                <button type="submit" class="w-100 btn btn-primary btn-lg text-white">Enviar</button>
+            </div>
+            <div class="col-2"></div>
+
+        </div>
+    </form>
+
+</div>
+
+<hr>
+
+
+{% if listaPrevia %}
+<h3 class="consultorio-h3">Cita anterior</h3>
+
+{% for anterior in listaPrevia %}
+
+<div class="container-fluid consultorio-container border pb-3">
+    <div class="row pacientes-inputs ">
+        <div class="col-6 mt-3">
+
+            <label class="form-label">Representante</label>
+            <div class="input-group mb-3">
+                <input class="form-control" type="text" placeholder="{{ anterior.id_cit.id_usu.nombre }}" disabled>
+            </div>
+
+            <label class="form-label">Lugar de la Cita Anterior</label>
+            <div class="input-group mb-3">
+                <input class="form-control" type="text" placeholder="{{ anterior.id_cit.id_lugar.nombre_lugar }}"
+                    disabled>
+            </div>
+
+            <label class="form-label">Motivo de la Cita Anterior</label>
+            <div class="input-group mb-3">
+                <textarea class="form-control" placeholder="{{ anterior.id_cit.nota_cit }}" aria-label="With textarea"
+                    disabled></textarea>
+            </div>
+
+        </div>
+
+        <div class="col-6 mt-3">
+            <label class="form-label">Paciente</label>
+            <div class="input-group mb-3">
+                <input class="form-control" type="text" placeholder="{{ anterior.id_cit.id_pac.nombre_pac }}" disabled>
+            </div>
+
+            <div class="col-12 d-flex">
+                <div class="col-5">
+                    <label class="form-label">Edad del paciente</label>
+                    <div class="input-group mb-3">
+                        <input type="hidden" value="{{ anterior.nacimiento_con }}" id="nacimiento_con_hidden">
+                        <input class="form-control" type="text" id="nacimiento_con"
+                            placeholder="{{ anterior.nacimiento_con }}" disabled>
+                    </div>
+                </div>
+                <div class="col-2"></div>
+                <div class="col-5">
+                    <label class="form-label">Peso del paciente</label>
+                    <div class="input-group mb-3">
+                        <input class="form-control" type="text" placeholder="{{ anterior.peso_con }}" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 d-flex">
+                <div class="col-5">
+                    <label class="form-label">Fecha de Cita Anterior</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="{{ anterior.id_cit.dia_cit }}" disabled>
+                    </div>
+                </div>
+                <div class="col-2"></div>
+                <div class="col-5">
+                    <label class="form-label">Altura del paciente</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="{{ anterior.altura_con }}" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-8 mb-3">
+            <label class="form-label">Notas/Observaciones Cita Anterior</label>
+
+            <div class="input-group">
+                <textarea class="form-control" aria-label="With textarea" placeholder="{{ anterior.nota_con }}"
+                    disabled></textarea>
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+{% endfor %}
+
+{% endif %}
+
+<script>
+    var nacimiento = document.getElementById('nacimiento_hidden').value;
+    var today = new Date();
+    var date = new Date(nacimiento);
+    var difference = Math.floor((today - date) / (1000 * 60 * 60 * 24 * 365));
+
+    document.getElementById('nacimiento_pac').placeholder = difference;
+
+    var nacimiento = document.getElementById('nacimiento_con_hidden').value;
+    var today = new Date();
+    var date = new Date(nacimiento);
+    var difference = Math.floor((today - date) / (1000 * 60 * 60 * 24 * 365));
+
+    document.getElementById('nacimiento_con').placeholder = difference;
+</script>
+
+
+{% include "pie.html" %}

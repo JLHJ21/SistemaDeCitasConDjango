@@ -1,0 +1,147 @@
+<!-- Plantilla de la cabecera de página, no supe como hacerlo con html 
+así que transforme el archivo a PHP -->
+{% include "cabecera-programador.html" %}
+
+
+<!-- Titulo de la página actual-->
+<h1 class="text-center border border-dark p-3 paginas-titulo">
+    ROLES
+</h1>
+
+<!-- Línea superadora -->
+<hr />
+
+<!-- Contenedor de la información de las citas-->
+<div class="container-fluid inicio-usuario-container">
+
+    {% for rol in listaRoles %}
+    {% if rol.es_administrador %}
+
+    <div class="row pt-3 pb-4">
+
+        <h2 class="text-center pb-2"><b>ROLES</b></h2>
+
+        <div class="col-12 d-flex justify-content-center">
+            <div class="col-3 text-center px-2">
+                <a name="" id="" class=" btn btn-primary w-100" href="{% url 'inicio' %}" role="button">Usuario/a</a>
+            </div>
+            {% if rol.es_administrador %}
+            <div class="col-3 text-center px-2">
+                <a name="" id="" class=" btn btn-primary w-100" href="{% url 'inicioAdmin' %}"
+                    role="button">Administrador/a</a>
+            </div>
+            {% endif %}
+
+            {% if rol.es_programador %}
+            <div class="col-3 text-center px-2">
+                <a name="" id="" class=" btn btn-primary w-100" href="{% url 'inicio_programador' %}"
+                    role="button">Programador/a</a>
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+    {% endfor %}
+
+    <!-- -->
+    <h2 class="text-center pt-4">
+        <b>ROLES</b>
+    </h2>
+
+    <!-- Tabla con las CITAS -->
+    <table class="table table-hover">
+        <thead>
+            <!-- Caracteristicas/Opciones de cada cita -->
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">USUARIO</th>
+                <th scope="col">ROL_USUARIO</th>
+                <th scope="col">ROL_ADMINISTRADOR</th>
+                <th scope="col">ROL_PROGRAMADOR</th>
+                <th scope="col">OPCIONES</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            <!-- Contenido de la tabla -->
+            {% for usuario in listaUsuarios %}
+            <tr>
+
+                <!-- id -->
+                <div class="row">
+                    <th scope="row" class="col-1"> {{ usuario.id_rol }}</th>
+                    <!-- descripcion -->
+                    <td class="col-3">{{ usuario.id_usu.username }}</td>
+                    <!-- fecha -->
+                    <td class="col-2">{{ usuario.es_usuario }}</td>
+                    <td class="col-2">{{ usuario.es_administrador }}</td>
+                    <td class="col-2">{{ usuario.es_programador }}</td>
+                    <td class="col-3">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#cambiarRol{{ usuario.id_rol }}">
+                            Cambiar Rol
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="cambiarRol{{ usuario.id_rol }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cambiar rol</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <form action="{% url 'roles_programador' %}" method="post">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="option1"
+                                                    id="usuario" value="option1" checked>
+                                                <label class="form-check-label" for="usuario">
+                                                    Usuario
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="option2"
+                                                    id="administrador" value="option2">
+                                                <label class="form-check-label" for="administrador">
+                                                    Administrador
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="option3"
+                                                    id="programador" value="option3">
+                                                <label class="form-check-label" for="programador">
+                                                    Programador
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Salir</button>
+                                            <button type="sbumit" class="btn btn-primary">Guardar Cambios</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
+                </div>
+
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+</div>
+
+<!-- Plantilla del pie de página -->
+{% include "pie.html" %}

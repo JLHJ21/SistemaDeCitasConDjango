@@ -1,0 +1,213 @@
+{% include "cabecera-administrador.html" %}
+
+<!-- Plantilla de la cabecera de página, no supe como hacerlo con html 
+así que transforme el archivo a PHP -->
+
+<!-- Titulo de la página actual-->
+<h1 class="text-center border border-dark p-3 paginas-titulo">
+    BIENVENIDO {{ request.user.nombre }}
+</h1>
+
+<!-- Línea superadora -->
+<hr />
+
+<!-- Contenedor de la información de las citas-->
+<div class="container-fluid admin-inicio-container">
+
+    {% for rol in listaRoles %}
+    {% if rol.es_administrador %}
+
+    <div class="row pb-4">
+
+        <h2 class="text-center pb-2"><b>ROLES</b></h2>
+
+        <div class="col-12 d-flex justify-content-center">
+            <div class="col-3 text-center px-2">
+                <a name="" id="" class=" btn btn-primary w-100" href="{% url 'inicio' %}" role="button">Usuario/a</a>
+            </div>
+            {% if rol.es_administrador %}
+            <div class="col-3 text-center px-2">
+                <a name="" id="" class=" btn btn-primary w-100" href="{% url 'inicioAdmin' %}"
+                    role="button">Administrador/a</a>
+            </div>
+            {% endif %}
+
+            {% if rol.es_programador %}
+            <div class="col-3 text-center px-2">
+                <a name="" id="" class=" btn btn-primary w-100" href="{% url 'inicio_programador' %}"
+                    role="button">Programador/a</a>
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+    {% endfor %}
+
+    <!-- -->
+    <h2 class="text-center">
+        <b>CITAS REALIZADAS</b>
+    </h2>
+
+    <!-- Tabla con las CITAS -->
+    <table class="table table-hover">
+        <thead>
+            <!-- Caracteristicas/Opciones de cada cita -->
+            <tr>
+                <th scope="col">Lugar</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Representante</th>
+                <th scope="col">Paciente</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Contenido de la tabla -->
+            {% if listaCitas %}
+            {% for cita in listaCitas %}
+            <tr>
+                <!-- Lugar -->
+                <td>{{ cita.id_cit.id_lugar.nombre_lugar }}</td>
+                <!-- Hora/rio -->
+                <td>{{ cita.id_cit.id_hora.inicio_hora }} a {{ cita.id_cit.id_hora.final_hora }} </td>
+                <!-- Representante -->
+                <td>{{ cita.id_cit.id_usu.nombre }}</td>
+                <!-- Paciente -->
+                <td>
+                    {% if cita.id_cit.id_pac %}
+                    {{ cita.id_cit.id_pac.nombre_pac }}
+                    {% else %}
+                    Sin paciente enlazado
+                    {% endif %}
+                </td>
+                <!-- Fecha -->
+                <th scope="row">{{ cita.id_cit.dia_cit }}</th>
+                <!-- Opciones -->
+                <td>
+                    <!-- El usuario pudiera modificar o cancelar la cita, tocaria encontrar la manera para que no se aprovechen o afecten las citas con este sistema -->
+                    <div class="text-left">
+
+                        <!-- Icono MODIFICAR cita -->
+                        <!--<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalModificar<?php echo $i; ?>">
+                                <i class="fa-solid fa-user-pen"></i>
+                            </button>-->
+
+                        <a href="{% url 'consultorio' %}" type="button" class="btn btn-outline-primary">
+                            <i class="fa-solid fa-user-pen"></i>
+                        </a>
+
+                        {% if cita.id_cit.id_pac.asd %}
+
+                        <a type="button" class="btn btn-outline-success" data-bs-toggle="modal"
+                            data-bs-target="#modalHistorial{{ cita.id_cit.id_cit }}">
+                            <i class="fa-solid fa-book-medical"></i>
+                        </a>
+
+                        <!-- Modal -->
+                        <!-- IMPORTANTE el ID, si son diferentes no funciona, mediante Javascript o Python se tiene que ir modificando -->
+                        <div class="modal fade" id="modalHistorial{{ cita.id_cit.id_cit }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Historial de Citas de {{
+                                            cita.id_cit.id_pac.nombre_pac }}
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h5 class="text-center">Consultas Anteriores ("Pedro Pérez, Dá 01-01-2000")</h5>
+                                        <div class="container-fluid p-0 m-0">
+                                            <div class="row">
+                                                <div class="col-3 mb-3">
+                                                    <label for="exampleFormControlInput1" class="form-label">Día de
+                                                        Cita</label>
+                                                    <input class="form-control" type="date" disabled>
+                                                </div>
+                                                <div class="col-3">
+                                                    <label for="exampleFormControlInput1"
+                                                        class="form-label">Representante</label>
+                                                    <select class="form-control" disabled>
+                                                        <option value="">Pedro Pérez</option>
+
+                                                    </select>
+                                                </div>
+                                                <div class="col-3">
+                                                    <label for="exampleFormControlInput1"
+                                                        class="form-label">Paciente</label>
+                                                    <select class="form-control" disabled>
+                                                        <option value="">José Pérez</option>
+
+                                                    </select>
+                                                </div>
+                                                <div class="col-3">
+                                                    <label for="exampleFormControlInput1" class="form-label">Lugar de la
+                                                        Cita</label>
+                                                    <select class="form-control" disabled>
+                                                        <option value="">Jauregi</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-4">
+                                                    <label for="exampleFormControlInput1" class="form-label">Edad del
+                                                        Paciente</label>
+                                                    <select class="form-control" disabled>
+                                                        <option value="">8 años</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-4">
+                                                    <label for="exampleFormControlInput1" class="form-label">Peso del
+                                                        Paciente</label>
+                                                    <select class="form-control" disabled>
+                                                        <option value="">40 kilos</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-4 mb-3">
+
+                                                    <label for="exampleFormControlInput1" class="form-label">Altura del
+                                                        Paciente</label>
+                                                    <select class="form-control" disabled>
+                                                        <option value="">1.40m</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <label for="exampleFormControlInput1"
+                                                        class="form-label">Nota/Observaciones</label>
+                                                    <textarea class="form-control" aria-label="With textarea"
+                                                        disabled></textarea>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                        <hr>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+
+
+        </tbody>
+    </table>
+
+</div>
+
+
+{% include "pie.html" %}

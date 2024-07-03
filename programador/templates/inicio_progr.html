@@ -1,0 +1,141 @@
+<!-- Plantilla de la cabecera de página, no supe como hacerlo con html 
+así que transforme el archivo a PHP -->
+{% include "cabecera-programador.html" %}
+
+
+<!-- Titulo de la página actual-->
+<h1 class="text-center border border-dark p-3 paginas-titulo">
+    BIENVENIDO {{ user.nombre }}
+</h1>
+
+<!-- Línea superadora -->
+<hr />
+
+<!-- Contenedor de la información de las citas-->
+<div class="container-fluid inicio-usuario-container">
+
+    {% for rol in listaRoles %}
+    {% if rol.es_administrador %}
+
+    <div class="row pt-3 pb-4">
+
+        <h2 class="text-center pb-2"><b>ROLES</b></h2>
+
+        <div class="col-12 d-flex justify-content-center">
+            <div class="col-3 text-center px-2">
+                <a name="" id="" class=" btn btn-primary w-100" href="{% url 'inicio' %}" role="button">Usuario/a</a>
+            </div>
+            {% if rol.es_administrador %}
+            <div class="col-3 text-center px-2">
+                <a name="" id="" class=" btn btn-primary w-100" href="{% url 'inicioAdmin' %}"
+                    role="button">Administrador/a</a>
+            </div>
+            {% endif %}
+
+            {% if rol.es_programador %}
+            <div class="col-3 text-center px-2">
+                <a name="" id="" class=" btn btn-primary w-100" href="{% url 'inicio_programador' %}"
+                    role="button">Programador/a</a>
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+    {% endfor %}
+
+    <div>
+        <h2 class="text-center pb-2">
+            <b>SUS DATOS</b>
+        </h2>
+    </div>
+
+    <div>
+        <div class="row g-3 pb-3">
+            <div class="col-6 position-relative">
+                <div class="input-group input-group-lg">
+                    <div class="input-group-text">
+                        <i class="fa-solid fa-user fa-xl"></i>
+                    </div>
+                    <input type="text" class="form-control" id="autoSizingInputGroup" placeholder="{{ user.nombre }}"
+                        disabled>
+                </div>
+            </div>
+
+            <div class="col-6 position-relative">
+                <div class="input-group input-group-lg">
+                    <div class="input-group-text">
+                        <i class="fa-solid fa-id-card fa-xl"></i>
+                    </div>
+                    <input type="text" class="form-control" id="autoSizingInputGroup" placeholder="{{ user.cedula }}"
+                        disabled>
+                </div>
+            </div>
+        </div>
+        <div class="row g-3">
+            <div class="col-6 position-relative p-1">
+                <div class="input-group input-group-lg">
+                    <div class="input-group-text">
+                        <i class="fa-solid fa-id-card fa-xl"></i>
+                    </div>
+                    <input type="text" class="form-control" id="autoSizingInputGroup" placeholder="0{{ user.numero }}"
+                        disabled>
+                </div>
+            </div>
+            <div class="col-6 position-relative">
+                <div class="input-group input-group-lg">
+                    <div class="input-group-text">
+                        <i class="fa-solid fa-envelope-open-text fa-xl"></i>
+                    </div>
+                    <input type="text" class="form-control" id="autoSizingInputGroup" placeholder="{{ user.correo }}"
+                        disabled>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- -->
+    <h2 class="text-center pt-4">
+        <b>AUDITORIA</b>
+    </h2>
+
+    <!-- Tabla con las CITAS -->
+    <table class="table table-hover">
+        <thead>
+            <!-- Caracteristicas/Opciones de cada cita -->
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <!-- Contenido de la tabla -->
+            {% for auditoria in auditorias %}
+            <tr>
+
+                <!-- id -->
+                <div class="row">
+                    <th scope="row" class="col-2"> {{ auditoria.id_aut }}</th>
+                    <!-- descripcion -->
+                    <td class="col-7">{{ auditoria.descripcion_aut }}</td>
+                    <!-- fecha -->
+                    <td class="col-3">{{ auditoria.fecha }}</td>
+                </div>
+
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+</div>
+
+<!-- Plantilla del pie de página -->
+{% include "pie.html" %}

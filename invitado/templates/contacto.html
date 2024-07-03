@@ -1,0 +1,78 @@
+{% load static %}
+
+<!-- Plantilla de la cabecera de página, no supe como hacerlo con html 
+así que transforme el archivo a PHP -->
+{% include "cabecera-invitado.html" %}
+<!-- Titulo de la página actual-->
+<h2 class="text-center border border-dark p-3 paginas-titulo">
+    CONTACTO
+</h2>
+
+<!-- Línea superadora -->
+<hr />
+
+<!-- Contenedor de la información de las citas-->
+<div class="container-fluid contacto-container">
+
+    <div>
+        <h2 class="text-center pb-2">
+            <b>¿Cómo me puede contactar?</b>
+        </h2>
+    </div>
+    <div class="row contact g-3 pb-3">
+        <div class="col-6 position-relative">
+            <div class="input-group input-contacto input-group-lg">
+                <div class="input-group-text">
+                    <i class="fa-brands fa-whatsapp fa-2xl"></i>
+                </div>
+                <input type="text" class="form-control" id="autoSizingInputGroup contact" value="(+58) 0414-730-9999"
+                    disabled>
+            </div>
+        </div>
+
+        <div class="col-6 position-relative">
+            <div class="input-group input-contacto input-group-lg">
+                <div class="input-group-text">
+                    <i class="fa-regular fa-envelope fa-2xl"></i>
+                </div>
+                <input type="text" class="form-control" id="autoSizingInputGroup contact"
+                    value="doctorabaydifernandez@gmail.com" disabled>
+            </div>
+        </div>
+
+        <div class="col-6 position-relative">
+            <div class="input-group input-contacto input-group-lg">
+                <div class="input-group-text">
+                    <i class="fa-brands fa-instagram fa-2xl"></i>
+                </div>
+                <input type="text" class="form-control" id="autoSizingInputGroup contact" value="@doctorabaydi"
+                    disabled>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div>
+        <h1 class="text-center pb-2">
+            <b>Lugares de Trabajo</b>
+        </h1>
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-6">
+                    <h2 class="ubicacion"><b>"San Cristóbal"</b></h2>
+                    <!-- Capaz colocar la foto o direccion del consultorio -->
+                    <img src='{% static "img/VE-S-sancristobal.png" %}' alt="" class="img-fluid">
+                </div>
+                <div class="col-6">
+
+                    <h2 class="ubicacion"><b>"Jáuregi"</b></h2>
+                    <!-- Capaz colocar la foto o direccion del consultorio -->
+                    <img src='{% static "img/VE-S-jauregui.png" %}' alt="" class="img-fluid">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Plantilla del pie de página -->
+{% include "pie.html" %}

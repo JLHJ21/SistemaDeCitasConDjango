@@ -1,0 +1,196 @@
+{% load static %}
+
+<!-- Plantilla de la cabecera de página, no supe como hacerlo con html 
+así que transforme el archivo a PHP -->
+{% include "cabecera-usuario.html" %}
+
+<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" href='{% static "css/calendario.css" %}'>
+
+
+{% if error %}
+<ul class="nav pt-2">
+    <li class="nav-item"> {{error }}</li>
+</ul>
+{% endif %}
+
+<h1 class="text-center p-3 paginas-titulo">
+    CITAS
+</h1>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="content w-100">
+                <div class="calendar-container shadow">
+                    <div class="calendar">
+                        <div class="year-header">
+                            <span class="left-button fa fa-chevron-left" id="prev"> </span>
+                            <span class="year" id="label"></span>
+                            <span class="right-button fa fa-chevron-right" id="next"> </span>
+                        </div>
+                        <table class="months-table w-100">
+                            <tbody>
+                                <tr class="months-row">
+                                    <td class="month" name="1">Ene</td>
+                                    <td class="month" name="2">Feb</td>
+                                    <td class="month" name="3">Mar</td>
+                                    <td class="month" name="4">Abr</td>
+                                    <td class="month" name="5">May</td>
+                                    <td class="month" name="6">Jun</td>
+                                    <td class="month" name="7">Jul</td>
+                                    <td class="month" name="8">Ago</td>
+                                    <td class="month" name="9">Sep</td>
+                                    <td class="month" name="10">Oct</td>
+                                    <td class="month" name="11">Nov</td>
+                                    <td class="month" name="12">Dic</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="days-table w-100">
+                            <td class="day">Dom</td>
+                            <td class="day">Lun</td>
+                            <td class="day">Mar</td>
+                            <td class="day">Mie</td>
+                            <td class="day">Jue</td>
+                            <td class="day">Vie</td>
+                            <td class="day">Sab</td>
+                        </table>
+                        <div class="frame">
+                            <table class="dates-table w-100">
+                                <tbody class="tbody">
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="button" id="add-button" onclick="fechaElegida()">Hacer cita</button>
+                    </div>
+                </div>
+                <div class="events-container">
+                </div>
+                <div class="dialog" id="dialog">
+                    <h2 class="dialog-header"> Datos de la Cita </h2>
+                    <form action="{% url 'cita' %}" method="POST" class="form" id="form">
+                        {% csrf_token %}
+
+                        <input type="hidden" name="id_usu" value="{{ request.user.id }}">
+                        <input type="hidden" name="estado_cita" value="Sin confirmar">
+
+                        <!--<div class="form-container" align="center">-->
+                        <div class="" align="center">
+                            <label class="form-label" id="valueFromMyButton" for="dia">Dia de la cita</label>
+                            <input class="input mb-3 form-control" type="date" value="2011-09-29"
+                                style="background-color:black;color-scheme: dark;" id="dia" name="dia_cit" readonly>
+
+                            <label class="form-label" id="valueFromMyButton" for="hora">Hora de cita</label>
+                            <select class="input mb-3 text-white" style="background-color:black;" id="hora"
+                                name="id_hora">
+                                {% if listaHoras %}
+                                {% for hora in listaHoras %}
+                                <option value="{{ hora.id_hora }}">{{ hora.inicio_hora }} a {{hora.final_hora }}
+                                </option>
+                                {% endfor %}
+                                {% else %}
+                                <option value="">No hay horas creadas</option>
+                                {% endif %}
+                            </select>
+
+                            <label class="form-label" id="valueFromMyButton" for="lugar">Lugar de cita</label>
+                            <select class="input mb-3" style="background-color:black;" id="lugar" name="id_lugar">
+                                {% if listaLugares %}
+                                {% for lugar in listaLugares %}
+                                <option value="{{ lugar.id_lugar }}">{{ lugar.ubicacion_lugar }}
+                                </option>
+                                {% endfor %}
+                                {% else %}
+                                <option value="">No hay lugares creados</option>
+                                {% endif %}
+                            </select>
+
+                            <label class="form-label" id="valueFromMyButton" for="paciente">Paciente</label>
+                            <select class="input mb-3" style="background-color:black;" id="paciente" name="id_pac">
+                                {% if listaPacientes %}
+                                {% for paciente in listaPacientes %}
+                                <option value="{{ paciente.id_pac }}">{{ paciente.nombre_pac }}
+                                </option>
+                                {% endfor %}
+                                {% else %}
+                                <option selected value="nada">No hay pacientes enlazados</option>
+                                {% endif %}
+                            </select>
+
+                            <div class="container">
+                                <label class="form-label" id="valueFromMyButton" for="nota">Nota/Descripción</label>
+                                <textarea class="form-control mb-2 text-white" id="nota_cit" name="nota_cit"
+                                    style="resize: none;background-color:black;" onkeypress="return SoloCorreo(event);"
+                                    onpaste="return false" minlength="3" maxlength="250" name="nota"></textarea>
+                            </div>
+
+
+
+                            <input type="button" value="Cancelar" class="button" id="cancel-button">
+                            <input type="submit" value="Enviar" class="button button-white" id="ok-button">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p id="prueba"></p>
+
+<script>
+
+    function fechaElegida() {
+        var mes = document.getElementsByClassName('active-month');
+        var dia = document.getElementsByClassName('active-date');
+        var anno = document.getElementsByClassName('year');
+
+
+        var mes_nmr = mes[0].getAttribute("name");
+        var dia_nmr = dia[0].getAttribute("name");
+        var anno_nmr = anno[0].textContent;
+
+        var mes_cero = '';
+        var dia_cero = '';
+
+        if (mes_nmr < 10) {
+            var mes_cero = 0;
+        }
+        if (dia_nmr < 10) {
+            var dia_cero = 0;
+        }
+
+        document.getElementById('dia').value = anno_nmr + '-' + mes_cero + mes_nmr + '-' + dia_cero + dia_nmr;
+
+        var hoy = new Date();
+        mes_cero_hoy = "";
+        hoy_cero_hoy = "";
+        if (hoy.getMonth() + 1 < 10) {
+            mes_cero_hoy = 0;
+        }
+        if (hoy.getDate() < 10) {
+            hoy_cero_hoy = 0;
+        }
+
+        var fecha = hoy.getFullYear() + '-' + mes_cero_hoy + (hoy.getMonth() + 1) + '-' + hoy_cero_hoy + hoy.getDate();
+
+        if (document.getElementById('dia').value < fecha) {
+            alert("El día seleccionado es menor al actual");
+            location.reload();
+        }
+
+    }
+
+</script>
+
+<script src='{% static "javascript/jquery.min.js" %}'></script>
+<script src='{% static "javascript/popper.js" %}'></script>
+<script src='{% static "javascript/main.js" %}'></script>
+
+<!-- Plantilla del pie de página -->
+{% include "pie.html" %}

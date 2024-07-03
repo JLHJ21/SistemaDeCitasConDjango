@@ -1,0 +1,59 @@
+<!-- Plantilla de la cabecera de página, no supe como hacerlo con html 
+así que transforme el archivo a PHP -->
+{% include "cabecera-usuario.html" %}
+
+<!-- Titulo de la página actual-->
+<h1 class="text-center border border-dark p-3 paginas-titulo">
+    HISTORIAL DE CITAS
+</h1>
+
+<!-- Línea superadora -->
+<hr />
+
+
+<h3>Citas Realizadas</h3>
+<div class="container-fluid historial-usuario-container border">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Paciente</th>
+                <th scope="col">Dia</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Lugar</th>
+                <th scope="col">Notas del Doctor/a</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% if listaCitas %}
+                {% for cita in listaCitas %}
+                {% if citas.id_cit.id_pac %}
+                <td> {{ citas.id_cit.id_pac.nombre_pac }}</td>
+                {% else %}
+                <td>No hay enlazado</td>
+                {% endif %}
+                <td>{{ cita.id_cit.dia_cit }}</td>
+                <td>{{ cita.id_cit.id_hora.inicio_hora }} a {{ cita.id_cit.id_hora.final_hora }}</td>
+                <td>{{ cita.id_cit.id_lugar.ubicacion_lugar}}</td>
+                <td>{{ cita.nota_con }}</td>
+
+            <tr>
+                {% endfor %}
+                {% else %}
+                <td>No tiene citas</td>
+                <td>No tiene citas</td>
+                <td>No tiene citas</td>
+                <td>No tiene citas</td>
+                {% endif %}
+
+            <tr>
+        </tbody>
+    </table>
+
+</div>
+
+
+<br>
+
+{% include "pie.html" %}

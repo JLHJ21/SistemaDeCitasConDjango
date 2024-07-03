@@ -1,0 +1,74 @@
+<!-- Plantilla de la cabecera de página, no supe como hacerlo con html 
+así que transforme el archivo a PHP -->
+{% include "cabecera-administrador.html" %}
+
+<!--
+<style>
+    .div_select_cita {
+        display: block;
+    }
+</style>-->
+
+<!-- Titulo de la página actual-->
+<h1 class="text-center border border-dark p-3 paginas-titulo">
+    CONSULTORIO
+</h1>
+
+<!-- Línea superadora -->
+<hr />
+
+<h3 class="consultorio-h3">Elija las citas para hoy ({{fecha}})</h3>
+
+<div class="container-fluid consultorio-container border">
+
+    <div class="row consultorio-inputs">
+        <div class="col-12 mt-3">
+            <label class="form-label">Cita</label>
+            <form action="{% url 'consultorio_cita' %}" class="needs-validation" method="get" novalidate>
+                {% csrf_token %}
+
+                <div class="input-group mb-3">
+
+                    <select class="form-select" required id="id_cita" name="id_cit">
+                        <option selected hidden value="">Elige la cita</option>
+                        {% if listaCitas %}
+                        {% for cita in listaCitas %}
+                        <option value="{{ cita.id_cit }}">Cita de {{ cita.id_usu.nombre }}
+                            {% if cita.id_pac %}
+                            con el paciente {{ cita.id_pac.nombre_pac }} para el día {{cita.dia_cit }}.
+                            {% else %}
+                            , por primera vez para el día {{cita.dia_cit }}.
+                            {% endif %}
+                        </option>
+                        {% endfor %}
+                        {% else %}
+                        <option value="" disabled selected>No hay ninguna cita para hoy</option>
+                        {% endif %}
+                    </select>
+                    <div class="invalid-tooltip">
+                        Es necesario elegir una cita
+                    </div>
+                </div>
+
+                <div class="row d-flex">
+                    <div class="col-2"></div>
+                    <div class="col-8 d-flex mb-3 ">
+                        <!-- ENVIAR INFORMACION -->
+                        <button type="submit" class="w-100 btn btn-primary btn-lg text-white">Enviar</button>
+                    </div>
+                    <div class="col-2"></div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+<!--En caso de ya estar registrado o haber hecho una cita antes TODO-->
+<hr>
+
+
+<!-- Plantilla del pie de página -->
+{% include "pie.html" %}

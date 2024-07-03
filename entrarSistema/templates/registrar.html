@@ -1,0 +1,181 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta - Sistema de Citas - Dra. Baydi Fernández</title>
+
+    <!-- Ubicacion del archivo FONTAWESOME para poder utilizar iconos -->
+    <link type='text/css' href='{% static "font_awesome/css_font_awesone/all.min.css" %}' rel="stylesheet">
+    <!-- Ubicacion del archivo CSS -->
+    <link type='text/css' href='{% static "css/estilo.css" %}' rel="stylesheet">
+    <!-- Ubicacion del archivo BOOTSTRAP -->
+    <link type='text/css' href='{% static "css/bootstrap/bootstrap.min.css" %}' rel="stylesheet">
+
+</head>
+
+<div class="container text-center ventajas pt-3">
+    <h3><strong>Ventajas de crear una cuenta:</strong></h3>
+    <ul>
+        <li>*Solicitar citas para consultas.</li>
+        <li>*Historial de citas.</li>
+    </ul>
+</div>
+
+<!-- CONTACTO -->
+<section class=" container-fluid">
+    <div class="container">
+        <div class="row container-fluid m-0 sign-container">
+            <div class="col-2 col-sm-0"></div>
+            <div
+                class="col-12 col-lg-8 p-3 m-3 mt-2 bg-light border border-dark rounded-3 rounded rounded-bottom shadow">
+                <h3 id="nav_contacto" class="text-center p-0 m-0 fw-bold pb-1">Registrarse</h3>
+                <form action="{% url 'registrarse' %}" method="post" class="needs-validation"
+                    enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    <div class="input-group mb-3 position-relative">
+
+                        <div class="col-12">
+                            <label for="nombre" class="form-label m-0 p-0"><b>Nombre</b></label>
+                            {{form.nombre}}
+                            <div class="invalid-tooltip">
+                                Es necesario ingresar un nombre
+                            </div>
+                            {% if form.nombre.errors %}
+                            <ul class="nav pt-2">
+                                {% for error in form.nombre.errors %}
+                                <li class="nav-item"> {{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="input-group mb-3 position-relative">
+                        <div class="col-12">
+                            <label for="usuario" class="form-label m-0 p-0"><b>Usuario</b></label>
+                            {{form.username}}
+                            <div class="invalid-tooltip">
+                                Es necesario ingresar un nombre de usuario
+                            </div>
+                            {% if form.username.errors %}
+                            <ul class="nav pt-2">
+                                {% for error in form.username.errors %}
+                                <li class="nav-item"> {{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="input-group mb-3 position-relative">
+                        <div class="col-12">
+                            <label for="email" class="form-label m-0 p-0"><b>Correo Electrónico</b></label>
+                            {{form.correo}}
+                            <div class="invalid-tooltip">
+                                Es necesario ingresar un correo electrónico
+                            </div>
+                            {% if form.correo.errors %}
+                            <ul class="nav pt-2">
+                                {% for error in form.correo.errors %}
+                                <li class="nav-item"> {{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="input-group mb-3 position-relative">
+                        <div class="col-12">
+                            <label for="email" class="form-label m-0 p-0"><b>Cédula</b></label>
+                            <div class="d-flex">
+                                <div class="col-2 pe-1">
+                                    {{form.nacionalidad}}
+                                </div>
+                                {% if form.nacionalidad.errors %}
+                                <ul class="nav pt-2">
+                                    {% for error in form.nacionalidad.errors %}
+                                    <li class="nav-item"> {{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+
+                                <div class="col-10">
+                                    {{form.cedula}}
+                                    <div class="invalid-tooltip">
+                                        Es necesario ingresar una cédula
+                                    </div>
+                                </div>
+                                {% if form.cedula.errors %}
+                                <ul class="nav pt-2">
+                                    {% for error in form.cedula.errors %}
+                                    <li class="nav-item"> {{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3 position-relative">
+                        <div class="col-12">
+                            <label for="numero" class="form-label m-0 p-0"><b>Número de Teléfono</b></label>
+                            {{form.numero}}
+                            <div class="invalid-tooltip">
+                                Es necesario ingresar un número de teléfono
+                            </div>
+                            {% if form.numero.errors %}
+                            <ul class="nav pt-2">
+                                {% for error in form.numero.errors %}
+                                <li class="nav-item"> {{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="input-group mb-3 position-relative">
+                        <div class="col-12">
+                            <label for="password1" class="form-label m-0 p-0"><b>Contraseña</b></label>
+                            {{form.password1}}
+                            <div class="invalid-tooltip">
+                                Es necesario ingresar una contraseña
+                            </div>
+                            {% if form.password1.errors %}
+                            <ul class="nav pt-2">
+                                {% for error in form.password1.errors %}
+                                <li class="nav-item"> {{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="input-group mb-3 position-relative">
+                        <div class="col-12">
+                            <label for="password2" class="form-label m-0 p-0"><b>Repita Contraseña</b></label>
+
+                            {{form.password2}}
+
+                            <div class="invalid-tooltip">
+                                Es necesario repetir la contraseña
+                            </div>
+
+                        </div>
+                        {% if form.password2.errors %}
+                        <ul class="nav pt-2">
+                            {% for error in form.password2.errors %}
+                            <li class="nav-item"> {{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-dark btn-block input-group">Registrarse</button>
+                    <h5 class="py-3 pb-0 text-center">¿Ya tienes una cuenta? <br> <a
+                            href="{% url 'iniciarSesion' %}">Iniciar
+                            Sesion</a></h5>
+                </form>
+            </div>
+            <div class="col-2 col-sm-0"></div>
+        </div>
+    </div>
+</section>
+{% include "pie.html" %}

@@ -1,0 +1,697 @@
+<!-- Plantilla de la cabecera de página, no supe como hacerlo con html 
+así que transforme el archivo a PHP -->
+{% include "cabecera-administrador.html" %}
+
+<!-- Titulo de la página actual-->
+<div class="border paginas-titulo border-warning rounded-3">
+    <h1 class="text-center">
+        <bold>CONFIGURACION</bold>
+    </h1>
+</div>
+
+<br>
+
+{% if formHoras.inicio_hora.errors %}
+<ul class="nav pt-2">
+    {% for error in formHoras.inicio_hora.errors %}
+    <li class="nav-item"> {{ error }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if formHoras.final_hora.errors %}
+<ul class="nav pt-2">
+    {% for error in formHoras.final_hora.errors %}
+    <li class="nav-item"> {{ error }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+
+{% if formLugares.ubicacion_lugar.errors %}
+<ul class="nav pt-2">
+    {% for error in formLugares.ubicacion_lugar.errors %}
+    <li class="nav-item"> {{ error }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if formLugares.nombre_lugar.errors %}
+<ul class="nav pt-2">
+    {% for error in formLugares.nombre_lugar.errors %}
+    <li class="nav-item"> {{ error }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if formLugares.id_hora.errors %}
+<ul class="nav pt-2">
+    {% for error in formLugares.id_hora.errors %}
+    <li class="nav-item"> {{ error }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+
+<div class="configuracion-citas-container">
+
+    <!-- DIV que encierra el acordion, mostrando un borde (border) -->
+    <div class="border pb-3">
+        <!-- DIV que permite tener varios acordiones a la vez -->
+        <div class="accordion" id="accordionExample">
+            <!-- DIV del primer acordion CAMBIAR DATOS DE USUARIO -->
+            <div class="accordion-item">
+                <!-- Datos del boton que expande el acordion (PALABRAS EN ROJO) -->
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <h5 class="text-danger">Horas de Trabajo</h5>
+                    </button>
+                </h2>
+
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+
+                        <!-- Input para cambiar el NOMBRE DE USUARIO -->
+                        <div class="row">
+                            <h5 class="p-1 text-center">Horas de trabajo actuales: </h5>
+                            <div class="col-12">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <!-- Titulos de la página -->
+                                        <tr>
+                                            <th scope="col">Inicio de Hora</th>
+                                            <th scope="col">Final de Hora</th>
+                                            <th scope="col">Opciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Contenido de la tabla-->
+                                        {% if listaHoras %}
+                                        {% for hora in listaHoras %}
+                                        <tr>
+
+                                            <td class="col-4">
+                                                <p>
+                                                    {{ hora.inicio_hora }}
+                                                </p>
+                                            </td>
+                                            <!-- Cedula del REPRESENTANTE-->
+                                            <td class="col-4">
+                                                <p>
+                                                    {{ hora.final_hora }}
+                                                </p>
+                                            </td>
+
+                                            <!-- ICONOS en la opciones -->
+                                            <td class=" col-2">
+                                                <div class="text-left">
+
+                                                    <!-- Icono MODIFICAR cita -->
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modalUpdate{{ hora.id_hora }}">
+                                                        <i class="fa-solid fa-user-pen"></i>
+                                                    </button>
+
+                                                    <!-- MODAL DE OPCIONES -->
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="modalUpdate{{ hora.id_hora }}"
+                                                        tabindex="-1">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Modificar Hora de Trabajo
+
+                                                                    </h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <form action="{% url 'updateHora' hora.id_hora %}"
+                                                                    method="POST" class="needs-validation p-2"
+                                                                    enctype="multipart/form-data" novalidate>
+
+                                                                    {% csrf_token %}
+
+                                                                    <div class="modal-body">
+                                                                        <div class="container-fluid p-0 m-0">
+
+                                                                            <!-- INPUTs que el usuario ingresará -->
+                                                                            <div class="row g-3">
+                                                                                <div class="col-sm-6 position-relative">
+
+                                                                                    <label class="form-label">Inicio de
+                                                                                        Hora</label>
+                                                                                    {{ formHoras.inicio_hora }}
+                                                                                    <div class="invalid-tooltip">
+                                                                                        Es necesario elegir una hora de
+                                                                                        inicio
+                                                                                    </div>
+
+                                                                                </div>
+                                                                                <div class="col-sm-6 position-relative">
+
+                                                                                    <label class="form-label">Final de
+                                                                                        Hora</label>
+                                                                                    {{ formHoras.final_hora }}
+                                                                                    <div class="invalid-tooltip">
+                                                                                        Es necesario elegir una hora
+                                                                                        final
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Salir</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Guardar
+                                                                            Cambios
+                                                                        </button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Icono ELIMINAR cita -->
+
+                                                    <!-- IMPORTANTE el ID, si son diferentes no funciona, mediante Javascript o Python se tiene que ir modificando -->
+                                                    <button type="button" class="btn btn-outline-danger"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modalDelete{{ hora.id_hora }}">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+
+                                                    <!-- MODAL DE OPCIONES -->
+                                                    <!-- Modal -->
+                                                    <!-- IMPORTANTE el ID, si son diferentes no funciona, mediante Javascript o Python se tiene que ir modificando -->
+                                                    <div class="modal fade" id="modalDelete{{ hora.id_hora }}"
+                                                        tabindex="-1">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Eliminar Hora de Trabajo
+
+                                                                    </h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <h5 class="text-center">Los Datos que suministraste
+                                                                    </h5>
+                                                                    <div class="row g-3">
+                                                                        <div class="col-sm-6 position-relative">
+
+                                                                            <label class="form-label">Inicio de
+                                                                                Hora</label>
+
+                                                                            <input class="form-control" type="text"
+                                                                                name="{{ hora.id_hora }}"
+                                                                                id="{{ hora.id_hora }}"
+                                                                                placeholder="{{ hora.inicio_hora }}">
+
+                                                                        </div>
+                                                                        <div class="col-sm-6 position-relative">
+
+                                                                            <label class="form-label">Final de
+                                                                                Hora</label>
+                                                                            <input class="form-control" type="text"
+                                                                                name="{{ hora.id_hora }}"
+                                                                                id="{{ hora.id_hora }}"
+                                                                                placeholder="{{ hora.final_hora }}">
+                                                                        </div>
+                                                                    </div>
+                                                                    ¿Está seguro que desea eliminar esta hora de
+                                                                    trabajo?
+                                                                </div>
+                                                                <form action="{% url 'eliminarHora' hora.id_hora %}"
+                                                                    method="POST">
+                                                                    {% csrf_token %}
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Salir</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-danger">Eliminar</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                        {% endfor %}
+
+
+                                        {% else %}
+                                        <td class="col-4">
+                                            <p>
+                                                No tiene ninguna hora registrada
+                                            </p>
+                                        </td>
+
+                                        <td class="col-4">
+                                            <p>
+                                                No tiene ninguna hora registrada
+                                            </p>
+                                        </td>
+
+                                        <td class="col-4">
+                                            <p>
+                                                No tiene ninguna hora registrada
+                                            </p>
+                                        </td>
+                                        {% endif %}
+
+
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+                                <!-- Boton para enviar la información del formulario -->
+                                <div class="col-12">
+                                    <!-- ENVIAR INFORMACION -->
+                                    <button type="button" class="w-100 btn btn-primary btn-lg text-white"
+                                        data-bs-toggle="modal" data-bs-target="#nuevaHora">Agregar nuevo
+                                        horario</button>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="nuevaHora" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Nuevo Horario de Trabajo</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <!-- Formulario para agregar un nuevo REPRESENTANTE-->
+                                            <form action="{% url 'configuracion_citas' %}" method="post"
+                                                class="needs-validation p-2" enctype="multipart/form-data" novalidate>
+
+                                                {% csrf_token %}
+
+                                                <div class="modal-body">
+                                                    <div class="container-fluid p-0 m-0">
+
+                                                        <!-- INPUTs que el usuario ingresará -->
+                                                        <div class="row g-3">
+                                                            <div class="col-sm-6 position-relative">
+
+                                                                <label class="form-label">Inicio de Hora</label>
+                                                                {{ formHoras.inicio_hora }}
+                                                                <div class="invalid-tooltip">
+                                                                    Es necesario elegir una hora de inicio
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="col-sm-6 position-relative">
+
+                                                                <label class="form-label">Final de Hora</label>
+                                                                {{ formHoras.final_hora }}
+                                                                <div class="invalid-tooltip">
+                                                                    Es necesario elegir una hora final
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Salir</button>
+                                                    <button type="submit" name="submitHoras"
+                                                        class="btn btn-primary">Agregar</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--ESTA PARTE SOLO LA VERIA EL ADMINISTRADOR (DOCTOR/A)-->
+
+            <!-- Segundo acordean, solo lo veria el administrador (Doctor/a) -->
+            <div class="accordion-item">
+
+                <!-- Datos del boton que expande el acordion (PALABRAS EN ROJO) -->
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <h5 class="text-danger">Lugares de Trabajo</h5>
+                    </button>
+                </h2>
+
+                <!-- Acordean abierto "colapsado" -->
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <!-- Input para cambiar el NOMBRE DE USUARIO -->
+                        <div class="row">
+                            <h5 class="p-1 text-center">Lugares de trabajo actuales: </h5>
+                            <div class="col-12">
+                                <table class="table table-hover lugares-citas">
+                                    <thead>
+                                        <!-- Titulos de la página -->
+                                        <tr>
+                                            <th scope="col">Lugar</th>
+                                            <th scope="col">Nombre del Centro Médico</th>
+                                            <th scope="col">Hora de Trabajo</th>
+                                            <th scope="col">Opciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Contenido de la tabla-->
+                                        <tr>
+                                            {% if listaLugares %}
+                                            {% for lugar in listaLugares %}
+
+                                            <!-- ID del REPRESENTANTE-->
+                                            <td class="col-3">
+                                                <p>{{ lugar.ubicacion_lugar }}</p>
+                                            </td>
+
+                                            <!-- Cedula del REPRESENTANTE-->
+                                            <td class="col-5">
+                                                <p>{{ lugar.nombre_lugar }}</p>
+                                            </td>
+
+                                            <td class="col-2">
+                                                <p>{{ lugar.id_hora.inicio_hora }} |<br> {{ lugar.id_hora.final_hora }}
+                                                </p>
+                                            </td>
+
+                                            <td class=" col-2">
+                                                <div class="text-left">
+
+                                                    <!-- Icono MODIFICAR cita -->
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#updateLugar{{ lugar.id_lugar }}">
+                                                        <i class="fa-solid fa-user-pen"></i>
+                                                    </button>
+
+                                                    <!-- MODAL DE OPCIONES -->
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="updateLugar{{ lugar.id_lugar }}"
+                                                        tabindex="-1">
+                                                        <div class="modal-dialog modal-lg">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Modificar Lugar de Trabajo
+                                                                    </h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <!-- Formulario para agregar un nuevo REPRESENTANTE-->
+
+                                                                <form action="{% url 'updateLugar' lugar.id_lugar %}"
+                                                                    method="post" class="needs-validation p-2"
+                                                                    enctype="multipart/form-data" novalidate>
+                                                                    {% csrf_token %}
+                                                                    <div class="modal-body">
+                                                                        <div class="container-fluid p-0 m-0">
+                                                                            <!-- INPUTs que el usuario ingresará -->
+                                                                            <div class="row g-3">
+                                                                                <!-- INPUT de la crreo electrónico del REPRESENTANTE-->
+                                                                                <!-- INPUT del nombre del REPRESENTANTE-->
+                                                                                <div class="col-sm-6 position-relative">
+                                                                                    <label class="form-label">Lugar del
+                                                                                        Centro Médico</label>
+                                                                                    {{ formLugares.ubicacion_lugar }}
+                                                                                    <!-- En caso de estar vacio se mostrará este mensaje -->
+                                                                                    <div class="invalid-tooltip">
+                                                                                        Es necesario poner el lugar del
+                                                                                        centro médico
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <!-- INPUT de la cédula del REPRESENTANTE-->
+                                                                                <div class="col-sm-6 position-relative">
+                                                                                    <label class="form-label">Nombre del
+                                                                                        Centro Médico</label>
+                                                                                    {{ formLugares.nombre_lugar }}
+                                                                                    <!-- En caso de estar vacio se mostrará este mensaje -->
+                                                                                    <div class="invalid-tooltip">
+                                                                                        Es necesario poner el nombre del
+                                                                                        centro médico
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="col-sm-12 position-relative">
+
+                                                                                    <label
+                                                                                        class="form-label">Hora</label>
+                                                                                    <select name="id_hora"
+                                                                                        class="form-select" required>
+                                                                                        <option selected disabled
+                                                                                            value="">Elegir hora
+                                                                                        </option>
+
+                                                                                        {% if listaHoras %}
+                                                                                        {% for hora in listaHoras %}
+                                                                                        <option
+                                                                                            value="{{ hora.id_hora }}">
+                                                                                            {{ hora.inicio_hora }} |
+                                                                                            {{ hora.final_hora }}
+                                                                                        </option>
+                                                                                        {% endfor %}
+                                                                                        {% endif %}
+
+                                                                                    </select>
+                                                                                    <div class="invalid-tooltip">
+                                                                                        Es necesario elegir una hora
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Salir</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Guardar
+                                                                            Cambios</button>
+                                                                    </div>
+                                                                </form>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Icono ELIMINAR cita -->
+
+                                                    <!-- IMPORTANTE el ID, si son diferentes no funciona, mediante Javascript o Python se tiene que ir modificando -->
+                                                    <button type="button" class="btn btn-outline-danger"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modalDeleteLugar{{ lugar.id_lugar }}">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+
+                                                    <!-- MODAL DE OPCIONES -->
+                                                    <!-- Modal -->
+                                                    <!-- IMPORTANTE el ID, si son diferentes no funciona, mediante Javascript o Python se tiene que ir modificando -->
+                                                    <div class="modal fade" id="modalDeleteLugar{{ lugar.id_lugar }}"
+                                                        tabindex="-1">
+                                                        <div class="modal-dialog modal-lg">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Eliminar Lugar de Trabajo
+                                                                    </h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="container-fluid p-0 m-0">
+
+                                                                        <h5 class="text-center">Datos que
+                                                                            suministraste</h5>
+                                                                        <!-- INPUTs que el usuario ingresará -->
+                                                                        <div class="row g-3">
+                                                                            <div class="col-sm-6 position-relative">
+                                                                                <label class="form-label">Lugar del
+                                                                                    Centro Médico</label>
+                                                                                <input type="text" class="form-control"
+                                                                                    placeholder="{{ lugar.ubicacion_lugar }}"
+                                                                                    disabled>
+                                                                            </div>
+
+                                                                            <!-- INPUT de la cédula del REPRESENTANTE-->
+                                                                            <div class="col-sm-6 position-relative">
+                                                                                <label class="form-label">Nombre del
+                                                                                    Centro Médico</label>
+                                                                                <input type="text" step="0.001"
+                                                                                    class="form-control"
+                                                                                    placeholder="{{ lugar.nombre_lugar}}"
+                                                                                    disabled>
+                                                                            </div>
+
+                                                                            <div class="col-sm-12 position-relative">
+
+                                                                                <label class="form-label">Hora</label>
+
+                                                                                <input type="text" class="form-control"
+                                                                                    placeholder="{{ lugar.id_hora.inicio_hora}} | {{ lugar.id_hora.final_hora}}"
+                                                                                    disabled>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <p class="text-center pt-4 m-0">¿Está seguro que
+                                                                        desea eliminar este lugar de trabajo?</p>
+                                                                </div>
+                                                                <form action="{% url 'deleteLugar' lugar.id_lugar %}"
+                                                                    method="POST">
+                                                                    {% csrf_token %}
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Salir</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-danger">Eliminar</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        {% endfor %}
+                                        {% else %}
+                                        <td class="col-3">
+                                            <p>No tiene ningún lugar registrado.</p>
+                                        </td>
+                                        <td class="col-5">
+                                            <p>No tiene ningún lugar registrado.</p>
+                                        </td>
+                                        <td class="col-2">
+                                            <p>No tiene ningún lugar registrado.</p>
+                                        </td>
+                                        <td class="col-2">
+                                            <p>No tiene ningún lugar registrado.</p>
+                                        </td>
+                                        </tr>
+
+
+                                        {% endif %}
+
+                                    </tbody>
+                                </table>
+
+                                <!-- Boton para enviar la información del formulario -->
+                                <div class="col-12">
+                                    <!-- ENVIAR INFORMACION -->
+                                    <button type="button" class="w-100 btn btn-primary btn-lg text-white"
+                                        data-bs-toggle="modal" data-bs-target="#nuevoLugar">Nuevo Lugar de
+                                        Trabajo</button>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="nuevoLugar" tabindex="-1">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Nuevo Lugar de Trabajo</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <!-- Formulario para agregar un nuevo REPRESENTANTE-->
+                                            <form action="{% url 'configuracion_citas' %}" method="POST"
+                                                class="needs-validation p-2" enctype="multipart/form-data" novalidate>
+                                                {% csrf_token %}
+                                                <div class="modal-body">
+                                                    <div class="container-fluid p-0 m-0">
+
+                                                        <!-- INPUTs que el usuario ingresará -->
+                                                        <div class="row g-3">
+                                                            <!-- INPUT de la crreo electrónico del REPRESENTANTE-->
+                                                            <!-- INPUT del nombre del REPRESENTANTE-->
+                                                            <div class="col-sm-6 position-relative">
+                                                                <label class="form-label">Lugar del Centro
+                                                                    Médico</label>
+                                                                {{ formLugares.ubicacion_lugar }}
+
+                                                                <!-- En caso de estar vacio se mostrará este mensaje -->
+                                                                <div class="invalid-tooltip">
+                                                                    Es necesario poner el lugar del centro médico
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- INPUT de la cédula del REPRESENTANTE-->
+                                                            <div class="col-sm-6 position-relative">
+                                                                <label class="form-label">Nombre del Centro
+                                                                    Médico</label>
+                                                                {{ formLugares.nombre_lugar }}
+                                                                <!-- En caso de estar vacio se mostrará este mensaje -->
+                                                                <div class="invalid-tooltip">
+                                                                    Es necesario poner el nombre del centro médico
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-12 position-relative">
+
+                                                                <label class="form-label">Horas de Trabajo</label>
+                                                                <select name="id_hora" class="form-select" required>
+                                                                    <option selected disabled value="">Elegir hora
+                                                                    </option>
+
+                                                                    {% if listaHoras %}
+                                                                    {% for hora in listaHoras %}
+                                                                    <option value="{{ hora.id_hora }}">
+                                                                        {{ hora.inicio_hora }} | {{ hora.final_hora }}
+                                                                    </option>
+                                                                    {% endfor %}
+                                                                    {% endif %}
+
+                                                                </select>
+                                                                <div class="invalid-tooltip">
+                                                                    Es necesario elegir una hora
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Salir</button>
+                                                    <button type="submit" name="submitLugares"
+                                                        class="btn btn-primary">Agregar</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Plantilla del pie de página -->
+{% include "pie.html" %}

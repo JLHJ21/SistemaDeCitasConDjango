@@ -1,0 +1,393 @@
+<!-- Plantilla de la cabecera de página, no supe como hacerlo con html 
+así que transforme el archivo a PHP -->
+{% include "cabecera-usuario.html" %}
+
+
+<!-- Titulo de la página actual-->
+<h1 class="text-center border border-dark p-3 paginas-titulo">
+    BIENVENIDO {{ user.nombre }}
+</h1>
+
+<!-- Línea superadora -->
+<hr />
+
+<!-- Contenedor de la información de las citas-->
+<div class="container-fluid inicio-usuario-container">
+
+    {% for rol in listaRoles %}
+    {% if rol.es_administrador %}
+
+    <div class="row pb-4">
+
+        <h2 class="text-center pb-2"><b>ROLES</b></h2>
+
+        <div class="col-12 d-flex justify-content-center">
+            <div class="col-3 text-center px-2">
+                <a name="" id="" class=" btn btn-primary w-100" href="{% url 'inicio' %}" role="button">Usuario/a</a>
+            </div>
+            {% if rol.es_administrador %}
+            <div class="col-3 text-center px-2">
+                <a name="" id="" class=" btn btn-primary w-100" href="{% url 'inicioAdmin' %}"
+                    role="button">Administrador/a</a>
+            </div>
+            {% endif %}
+
+            {% if rol.es_programador %}
+            <div class="col-3 text-center px-2">
+                <a name="" id="" class=" btn btn-primary w-100" href="{% url 'inicio_programador' %}"
+                    role="button">Programador/a</a>
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+    {% endfor %}
+
+    <div>
+        <h2 class="text-center pb-2">
+            <b>SUS DATOS</b>
+        </h2>
+    </div>
+
+    <div>
+        <div class="row g-3 pb-3">
+            <div class="col-6 position-relative">
+                <div class="input-group input-group-lg">
+                    <div class="input-group-text">
+                        <i class="fa-solid fa-user fa-xl"></i>
+                    </div>
+                    <input type="text" class="form-control" id="autoSizingInputGroup" placeholder="{{ user.nombre }}"
+                        disabled>
+                </div>
+            </div>
+
+            <div class="col-6 position-relative">
+                <div class="input-group input-group-lg">
+                    <div class="input-group-text">
+                        <i class="fa-solid fa-id-card fa-xl"></i>
+                    </div>
+                    <input type="text" class="form-control" id="autoSizingInputGroup" placeholder="{{ user.cedula }}"
+                        disabled>
+                </div>
+            </div>
+        </div>
+        <div class="row g-3">
+            <div class="col-6 position-relative p-1">
+                <div class="input-group input-group-lg">
+                    <div class="input-group-text">
+                        <i class="fa-solid fa-id-card fa-xl"></i>
+                    </div>
+                    <input type="text" class="form-control" id="autoSizingInputGroup" placeholder="0{{ user.numero }}"
+                        disabled>
+                </div>
+            </div>
+            <div class="col-6 position-relative">
+                <div class="input-group input-group-lg">
+                    <div class="input-group-text">
+                        <i class="fa-solid fa-envelope-open-text fa-xl"></i>
+                    </div>
+                    <input type="text" class="form-control" id="autoSizingInputGroup" placeholder="{{ user.correo }}"
+                        disabled>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p class="m-0 p-0 text-center">Si desea cambiar sus datos has click <a href="{% url 'configuracion' %}">aquí</a>.
+    </p>
+
+
+    {% if listaCitas %}
+
+    <!-- -->
+    <h2 class="text-center pt-4">
+        <b>LAS CITAS QUE HA REGISTRADO</b>
+    </h2>
+
+    <!-- Tabla con las CITAS -->
+    <table class="table table-hover">
+        <thead>
+            <!-- Caracteristicas/Opciones de cada cita -->
+            <tr>
+                <th scope="col">Fecha</th>
+                <th scope="col">Lugar</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cita in listaCitas %}
+
+            <!-- Contenido de la tabla -->
+            <tr>
+
+                <!-- Fecha -->
+                <th scope="row">{{ cita.dia_cit }}</th>
+                <!-- Lugar -->
+                <td>{{ cita.id_lugar.ubicacion_lugar}}</td>
+                <!-- Hora/rio -->
+                <td>{{ cita.id_hora.inicio_hora }} | {{ cita.id_hora.final_hora }}</td>
+                <!-- Estado -->
+                <th class="text-truncate">{{ cita.estado_cita }}</th>
+                <!-- Opciones -->
+                <td>
+                    <!-- El usuario pudiera modificar o cancelar la cita, tocaria encontrar la manera para que no se aprovechen o afecten las citas con este sistema -->
+                    <div class="text-left">
+
+                        <!-- Icono MODIFICAR cita -->
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                            data-bs-target="#modalUpdate{{ cita.id_cit }}">
+                            <i class=" fa-solid fa-user-pen"></i>
+                        </button>
+
+                        <!-- MODAL DE OPCIONES -->
+                        <!-- Modal -->
+                        <div class="modal fade" id="modalUpdate{{ cita.id_cit }}" tabindex=" -1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modificar Datos del Paciente
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+
+                                    <!-- Formulario para agregar un nuevo PACIENTE-->
+                                    <form action="{% url 'inicio' %}" method="POST"
+                                        class="needs-validation border rounded-3 p-2" enctype="multipart/form-data"
+                                        novalidate>
+                                        <div class="modal-body">
+                                            {% csrf_token %}
+
+                                            <input type="hidden" name="id_cit" value="{{ cita.id_cit }}">
+
+                                            <div class="container-fluid p-0 m-0">
+
+                                                <!-- INPUTs que el usuario ingresará -->
+                                                <div class="row g-3">
+                                                    <!-- SELECT para seleccionar el REPRESENTANTE del PACIENTE-->
+                                                    <div class="col-sm-12 position-relative">
+                                                        <label class="form-label">DIA DE LA CITA</label>
+                                                        <input type="date" class="form-control" required name="dia_cit">
+                                                        <div class="invalid-tooltip">
+                                                            Es necesario elegir un dia
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- INPUT del nombre del PACIENTE-->
+                                                    <div class="col-sm-12 position-relative">
+                                                        <label class="form-label">Hora de la cita</label>
+                                                        <select class="form-select" required name="id_hora">
+                                                            {% if listaHoras %}
+                                                            <option selected hidden value="">Elegir hora</option>
+                                                            {% for hora in listaHoras %}
+                                                            <option value="{{ hora.id_hora }}">{{ hora.inicio_hora }} a
+                                                                {{hora.final_hora }}
+                                                            </option>
+                                                            {% endfor %}
+                                                            {% else %}
+                                                            <option value="">No hay horas creadas</option>
+                                                            {% endif %}
+                                                        </select>
+                                                        <!-- En caso de estar vacio se mostrará este mensaje -->
+                                                        <div class="invalid-tooltip">
+                                                            Es necesario poner una hora de la cita
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- INPUT de la cédula del PACIENTE-->
+                                                    <div class="col-sm-12 position-relative">
+                                                        <label class="form-label">Lugar de Cita</label>
+                                                        {% if listaLugares %}
+                                                        <select class="form-select" required name="id_lugar">
+                                                            <option selected hidden value="">Elegir lugar</option>
+                                                            {% for lugar in listaLugares %}
+
+                                                            <option value="{{ lugar.id_lugar }}">
+                                                                {{ lugar.ubicacion_lugar }}
+                                                            </option>
+                                                            {% endfor %}
+
+                                                        </select>
+                                                        <div class="invalid-tooltip">
+                                                            Es necesario elegir un lugar
+                                                        </div>
+                                                        {% else %}
+                                                        <select class="form-select" disabled name="id_lugar">
+                                                            <option value="">No hay lugares creados</option>
+                                                        </select>
+                                                        {% endif %}
+
+                                                    </div>
+
+                                                    <!-- INPUT de la teléfono del PACIENTE-->
+                                                    <div class="col-sm-12 position-relative">
+                                                        <label class="form-label">PACIENTE</label>
+                                                        {% if listaPacientes %}
+                                                        <select class="form-select" name="id_pac">
+
+                                                            {% for paciente in listaPacientes %}
+                                                            <option value="{{ paciente.id_pac }}">{{ paciente.nombre_pac
+                                                                }}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                        <!-- En caso de estar vacio se mostrará este mensaje -->
+                                                        <div class="invalid-tooltip">
+                                                            Es necesario elegir un paciente
+                                                        </div>
+                                                        {% else %}
+                                                        <select class="form-select" name="id_pac">
+
+                                                            <option selected value="nada">No hay pacientes enlazados
+                                                            </option>
+                                                        </select>
+
+                                                        {% endif %}
+
+                                                    </div>
+
+                                                    <div class="col-sm-12 position-relative">
+                                                        <label class="form-label">Razon de Cita</label>
+                                                        <textarea class="form-control" onkeypress="return Texto(event);"
+                                                            onpaste="return false" minlength="3" maxlength="100"
+                                                            required name="nota_cit"></textarea>
+                                                        <div class="invalid-tooltip">
+                                                            Es necesario describir el porque de la cita
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Salir</button>
+                                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Icono ELIMINAR cita -->
+
+                        <!-- IMPORTANTE el ID, si son diferentes no funciona, mediante Javascript o Python se tiene que ir modificando -->
+                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                            data-bs-target="#modalDelete{{ cita.id_cit }}">
+                            <i class=" fa-solid fa-trash-can"></i>
+                        </button>
+
+                        <!-- Modal -->
+                        <!-- IMPORTANTE el ID, si son diferentes no funciona, mediante Javascript o Python se tiene que ir modificando -->
+                        <div class="modal fade" id="modalDelete{{ cita.id_cit }}" tabindex=" -1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Eliminar Cita
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h5 class="text-center">Los Datos que suministraste</h5>
+                                        <div class="mb-3 ">
+                                            <label for="exampleFormControlInput1" class="form-label">Día de
+                                                Cita</label>
+                                            <input type="text" class="form-control" placeholder="{{ cita.dia_cit }}"
+                                                disabled>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">Fecha de
+                                                Cita</label>
+                                            <input type="text" class="form-control"
+                                                placeholder="{{ cita.id_hora.inicio_hora}} a {{ cita.id_hora.final_hora}}"
+                                                disabled>
+
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">Lugar de
+                                                Cita</label>
+                                            <input type="text" class="form-control"
+                                                placeholder="{{ cita.id_lugar.nombre_lugar }}" disabled>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">Paciente</label>
+                                            {% if cita.id_pac %}
+                                            <input type="text" class="form-control"
+                                                placeholder="{{ cita.id_pac.nombre.pac }}" disabled>
+                                            {% else %}
+                                            <input type="text" class="form-control" placeholder="Sin paciente" disabled>
+                                            {% endif %}
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1"
+                                                class="form-label">Nota/Descripción</label>
+                                            <textarea class="form-control" placeholder="{{ cita.nota_cit }}"
+                                                disabled></textarea>
+                                        </div>
+                                        ¿Está seguro que desea eliminar esta cita? Tendrá que esperar 24 horas para
+                                        volver a realizar una nueva.
+                                    </div>
+                                    <form action="{% url 'deleteCita' cita.id_cit  %}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Salir</button>
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </td>
+
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    {% else %}
+
+    <div class="col-lg-12 text-center">
+        <img src="https://t3.ftcdn.net/jpg/01/32/69/98/360_F_132699825_ioyaF5ZgaCehn4907aai6fZkFijtBIEk.jpg"
+            class="img-fluid pt-4" alt="...">
+    </div>
+
+    <!-- Espacio de línea -->
+    <br>
+
+    <!-- En caso de haber alguna mostrará -->
+    <!-- if (condicion) {-->
+    <!-- Mostrar citas -->
+    <!-- } else {-->
+    <h4 class="text-center">
+        "En estos momentos no ha pedido ninguna cita"
+    </h4>
+    <h4 class="text-center">
+        "Para pedir una diríjase a <b>
+            <i>
+                <a href="{% url 'cita' %}">Citas</a>
+            </i>
+        </b>"
+    </h4>
+    <!-- } -->
+    {% endif %}
+
+</div>
+
+<!-- Plantilla del pie de página -->
+{% include "pie.html" %}

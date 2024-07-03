@@ -1,0 +1,120 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Citas - Dra. Baydi Fernández</title>
+
+    <!-- Ubicacion del archivo FONTAWESOME para poder utilizar iconos -->
+    <link type='text/css' href='{% static "font_awesome/css_font_awesone/all.min.css" %}' rel="stylesheet">
+    <!-- Ubicacion del archivo CSS -->
+    <link type='text/css' href='{% static "css/estilo.css" %}' rel="stylesheet">
+    <!-- Ubicacion del archivo BOOTSTRAP -->
+    <link type='text/css' href='{% static "css/bootstrap/bootstrap.min.css" %}' rel="stylesheet">
+
+</head>
+
+<style>
+    /* # SIGNIFICA ID */
+    /* ESTA LINEA DE CSS HACE QUE LA BARRA LATERAL "SIDEBAR" SE MANTENGA SIEMPRE EN LA PANTALLA SIN IMPORTAR LA ALTURA DEL CONTENIDO */
+    #sidebar-wrapper {
+        margin-left: -250px;
+        left: 250px;
+        width: 250px;
+        position: fixed;
+        height: 100%;
+        overflow-y: auto;
+        z-index: 1000;
+        transition: all 0.4s ease 0s;
+    }
+
+    /* EMPUJA EL CONTENIDO DEL MAIN, SI SE DESACTIVA SE SOBREPONEN TANTO EL SIDEBAR COMO EL MAIN */
+    #main {
+        margin-left: 250px;
+
+    }
+</style>
+
+<body>
+    <div class="container-fluid">
+        <!-- Panel lateral -->
+
+        <div class="row flex-nowrap ">
+            <!-- DIV que le da la forma al panel -->
+            <div class="d-flex flex-column p-3 text-white bg-dark" id="sidebar-wrapper">
+                <!-- Bloque de información, CONTIENE el título de la página -->
+                <a href="/inicio_programador/"
+                    class="d-flex align-items-center mx-auto mb-3 mb-md-0 me-md-auto text-white text-decoration-none p-3">
+                    <i class="fa-solid fa-stethoscope fa-2xl" style="color: #ffffff;"></i>
+                </a>
+
+                <!-- Línea separadora -->
+                <hr>
+
+                <!-- LISTA de las página que el usuario puede visitar -->
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <!-- Contiene el INICIO de la página, el menu principal se pudiera decir -->
+                    <li class="nav-item">
+                        <!-- IMPORTANTE, para que funcione el ACTIVE en los nav-item, es necesario colocar en el id del enlace (a) un nombre (preferiblemente del nombre de la pagina) atras de un tab, ejp: tab-menu_principal, con eso el javascript funcionará, para agregar más páginas revisar JAVASCRIPT -->
+                        <a href="/inicio_programador/" class="tab-li nav-link text-white" id="tab-inicio">
+                            <i class="fa-solid fa-house bi me-2"></i>
+                            <span class="fs-5">Inicio</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <!-- IMPORTANTE, para que funcione el ACTIVE en los nav-item, es necesario colocar en el id del enlace (a) un nombre (preferiblemente del nombre de la pagina) atras de un tab, ejp: tab-menu_principal, con eso el javascript funcionará, para agregar más páginas revisar JAVASCRIPT -->
+                        <a href="/roles_programador/" class="tab-li nav-link text-white" id="tab-inicio">
+                            <i class="fa-solid fa-users bi me-2"></i>
+                            <span class="fs-5">Roles</span>
+                        </a>
+                    </li>
+                    <!-- Contiene la página de CONFIGURACION -->
+                    <li class="nav-item pb-2">
+                        <a href="/configuracion/" class="tab-li nav-link text-white" id="tab-configuracion">
+                            <i class="fa-solid fa-gears bi me-2"></i>
+                            <span class="fs-5">Configuración</span>
+                        </a>
+                    </li>
+                    <!-- Contiene la página de CERRAR SESION -->
+                    <li class="nav-item pb-2">
+                        <a href="/cerrar/" class="tab-li nav-link text-white" id="cerrar_sesion">
+                            <i class="fa-solid fa-right-from-bracket bi me-2"></i>
+                            <span class="fs-5">Cerrar Sesión</span>
+                        </a>
+                    </li>
+                    <!-- Contiene la página CITAS -->
+                    <li class="nav-item pb-2">
+                        <a href="/inicio/" class="tab-li nav-link text-white" id="tab-citas">
+                            <i class="fa-solid fa-user bi me-2"></i>
+                            <span class="fs-5">Usuario</span>
+                        </a>
+                    </li>
+                    <!-- Contiene la página HISTORIAL DE CITAS -->
+                    <li class="nav-item pb-2">
+                        <a href="/inicio_admin/" class="tab-li nav-link text-white" id="tab-citas">
+                            <i class="fa-solid fa-user bi me-2" style="color: #ffffff;"></i>
+
+                            <span class="fs-5">Administrador</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Línea separadora -->
+                <hr>
+
+                <!-- Contiene la información del usuario, mostrando el nombre de usuario y la foto de "perfil" que tienen se pudiera mantener o eliminar -->
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="fa-regular fa-circle-user fs-2 rounded-circle me-2"></i>
+                    <strong>{{ user.username }}</strong>
+                </a>
+            </div>
+
+
+            <div class="col-sm p-4 min-vh-100" id="main">
+                <main>
+                    <!-- BLOQUE DE CONTENIDO -->

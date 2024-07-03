@@ -1,0 +1,908 @@
+/* 
+
+ÍNDICE DE ESTILOS.CSS
+
+- UNIVERSAL TABLAS
+- ESTILOS GENERALES
+- AGREGADO DE FUENTE
+
+////////////////// RESPONSIVE /////////////////////
+
+///////////////// RESPONSIVE TABLET //////////////////
+
+- ESTRUCTURA (FLEX, FOOTER)
+- MENU
+
+////////// INVITADO //////////
+
+- INICIAR SESIÓN
+- CREAR CUENTA
+- INFORMACIÓN
+- CONTACTO
+
+////////// USUARIO ///////////
+
+- INICIO
+- HISTORIAL DE CITAS
+- CONFIGURACIÓN
+
+///////// ADMIN ///////////
+
+- INICIO ADMIN
+- REPRESENTANTES
+- PACIENTES
+- CONSULTORIO
+- CITAS ADMIN
+- CONFIGURACIÓN CITAS ADMIN
+
+///////////////// RESPONSIVE MOBILE //////////////////
+
+- ESTRUCTURA MOBILE (FLEX, FOOTER)
+- MODALES 
+- MENU MOBILE
+
+////////// INVITADO MOBILE //////////
+
+- INICIAR SESIÓN MOBILE
+- CREAR CUENTA MOBILE
+- INFORMACIÓN MOBILE
+- CONTACTO MOBILE
+
+////////// USUARIO MOBILE //////////
+
+- INICIO MOBILE
+- HISTORIAL DE CITAS MOBILE
+- CONFIGURACIÓN MOBILE
+
+////////// ADMIN MOBILE //////////
+
+- INICIO ADMIN MOBILE
+- REPRESENTANTES MOBILE
+- PACIENTES MOBILE
+- CONSULTORIO MOBILE
+- CITAS ADMIN MOBILE
+- CONFIGURACIÓN CITAS ADMIN MOBILE
+
+///////////////// RESPONSIVE PERSONALIZADOS //////////////////
+
+////////// USUARIO PERSONALIZADOS //////////
+
+- HISTORIAL CITAS PERSONALIZADO
+- CONFIGURACIÓN PERSONALIZADO
+
+////////// ADMIN PERSONALIZADOS //////////
+
+- INICIO ADMIN PERSONALIZADOS
+- REPRESENTANTES PERSONALIZADOS
+- PACIENTES PERSONALIZADOS
+- CITAS ADMIN PERSONALIZADOS
+- CONFIGURACIÓN CITAS PERSONALIZADOS
+
+*/
+
+/* UNIVERSAL TABLAS */
+
+.tab-li{
+    position: relative;
+}
+
+.tab-li:after{
+    content: "";
+    position: absolute;
+    background-color: #ff3c78;
+    height: 3px;
+    width: 0;
+    left: 0.4cm;
+    bottom: 3.5px;
+    transition: 0.3s;
+}
+
+.tab-li:hover:after{
+    width: 85%;
+}
+
+/* ESTILOS GENERALES */
+
+.paginas-titulo {
+    background-color: #343a40;
+    color: white;
+    border-radius: 5%;
+    font-family: 'Montserrat', sans-serif;
+}
+
+li {
+    font-size: 20px;
+    font-weight: 600;
+    color: #ff3c78;
+}
+
+.ventajas ul li {
+    list-style-type: none;
+    color: black;
+}
+
+/* AGREGADO DE FUENTE */
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+  }
+
+/* RESPONSIVE */
+
+/**********************************************************************************************************/
+/* RESPONSIVE TABLET */
+
+@media screen and (min-width: 768px) and (max-width:1023px) {
+
+    /* ESTRUCTURA */
+
+    .flex-nowrap {
+        flex-wrap: wrap !important;
+    }
+
+    footer {
+        font-size: 2rem;
+        text-align: center;
+        align-items: center !important;
+    }
+
+    footer .align-items-center, footer .align-items-end {
+        width: 50% !important;
+    }
+
+    footer ul {
+        margin: 0 auto;
+    }
+
+    footer .fa-lg {
+        font-size: 2.5rem;
+    }
+
+    .paginas-titulo {
+        font-size: 2.5rem;
+    }
+
+    .table>:not(caption)>*>*, .table td, .table p {
+        font-size: 1.7rem;
+        text-align: center;
+    }
+
+    /* MENU */
+
+    #sidebar-wrapper {
+        width: 100% !important;
+        height: 70% !important;
+        justify-content: center !important;
+        position: relative !important;
+        justify-content: center !important;
+        padding: 4rem 1rem !important;
+    }
+
+    #main {
+        margin: 0 !important;
+    }
+
+    li.nav-item {
+        text-align: center;
+    }
+
+    #sidebar-wrapper a {
+        justify-content: center !important;
+    }
+
+    #sidebar-wrapper a span, #sidebar-wrapper a.d-flex {
+        font-size: 2rem !important;
+    }
+
+    /*/////////////////////////////////////////////////////////////////// INVITADO ///////////////////////////////////////////////////////////*/
+
+    /* INICIAR SESIÓN */
+
+    .login-container h3 {
+        margin-bottom: 5% !important;
+    }
+
+    .login-container label {
+        margin-bottom: 2.5% !important;
+    }
+
+    .login-container label b, .login-container h3.text-center, .login-container button[type="submit"], .login-container input::placeholder, .login-container input {
+        font-size: 2rem !important;
+    }
+
+    /* CREAR CUENTA */
+
+    .ventajas h3 {
+        font-size: 2.2rem !important;
+        margin: 5% 0 !important;
+    }
+
+    .sign-container {
+        padding-left: 0 !important;
+    }
+
+    .sign-container form div {
+        margin-bottom: 2% !important;
+    }
+
+    .sign-container label {
+        margin-bottom: 3% !important;
+    }
+
+    .ventajas li, .sign-container label b, .sign-container h3.text-center, .sign-container button[type="submit"], .sign-container input::placeholder, .sign-container input {
+        font-size: 2rem !important;
+    }
+
+    /* INFORMACIÓN */
+
+    .informacion-container h2, h5.p-0, h5, h4 {
+        font-size: 2.5rem !important;
+    }
+
+    .informacion-container li {
+        font-size: 2.2rem !important
+    }
+
+    img.informacion-img {
+        width: 450px !important;
+        height: 450px !important;
+    }
+
+    /* CONTACTO */
+
+    h2.ubicacion {
+        font-size: 1.2rem !important;
+    }
+
+    .contacto-container h1, .contacto.container h2.pb-2 {
+        font-size: 2.5rem !important;
+    }
+
+    .contacto-container h2.ubicacion, .contacto-container h3, .contacto-container h4, .contacto-container h2, .contacto-container .contact .input-group input {
+        font-size: 2rem !important;
+    }
+
+    .contacto-container .pb-2 {
+        margin-bottom: 5% !important;
+    }
+
+    .contacto-container .col-4 {
+        width: 50% !important;
+        margin-bottom: 5%;
+    }
+
+    .contacto-container .text-center {
+        justify-content: center !important;
+    }
+
+    .p-4 {
+        padding: 1.5rem !important;
+    }
+
+    .contact {
+        flex-direction: column;
+        justify-content: left;
+    }
+
+    .g-3 {
+        align-items: baseline;
+    }
+    
+    .input-contacto{
+        width: 190% !important;
+    }
+
+    /*//////////////////////////////////////////////////////////////// USUARIO //////////////////////////////////////////////////////////////*/
+
+    /* INICIO USUARIO */
+
+    .inicio-usuario-container .g-3 {
+        flex-direction: column !important;
+    }
+
+    .inicio-usuario-container .input-group {
+        width: 90vw !important;
+    }
+
+    .inicio-usuario-container .table th:nth-child(4), 
+    .inicio-usuario-container .table td:nth-child(4) {
+        display: none !important;
+    }
+
+    .inicio-usuario-container input, .inicio-usuario-container b, .inicio-usuario-container p{
+        font-size: 2rem !important;
+    }
+
+    .inicio-usuario-container p {
+        margin-top: 5% !important;
+    }
+
+    .inicio-usuario-container table td {
+        font-size: 1.7rem !important;
+    }
+
+    /*.inicio-usuario-container .table>:not(caption)>*>*,
+    .inicio-usuario-container .table td {
+        font-size: 1.7rem;
+        text-align: center;
+    }*/
+
+    /* HISTORIAL DE CITAS */
+
+    /*.historial-usuario-container .table>:not(caption)>*>*,
+    .historial-usuario-container .table td {
+        font-size: 1.7rem;
+        text-align: center;
+    }*/
+
+    /* CONFIGURACIÓN */
+
+    .configuracion-usuario-container .row .col-4 {
+        width: 50% !important;
+    }
+
+    .configuracion-usuario-container .row .col-5 {
+        width: 50% !important;
+        margin: auto !important;
+    }
+
+    .configuracion-usuario-container .cedula-config-div {
+        justify-content: center !important;
+    }
+
+    .configuracion-usuario-container .cedula-config-div .col-2 {
+        width: 100% !important;
+    }
+
+    .configuracion-usuario-container .row input, .configuracion-usuario-container input[type="submit"] {
+        font-size: 2rem !important;
+    }
+
+    /*////////////////////////////////////////////////////////////////// ADMIN ///////////////////////////////////////////////////////////////*/
+
+    /* INICIO ADMIN */
+
+    .admin-inicio-container .table th:nth-child(5),
+    .admin-inicio-container .table tr td:nth-child(5) {
+        display: none !important;
+    }
+
+    .admin-inicio-container div.text-left a {
+        margin-bottom: 10% !important;
+    }
+
+    /*.admin-inicio-container .table>:not(caption)>*>*,
+    .admin-inicio-container .table td {
+        font-size: 1.7rem;
+        text-align: center;
+    }*/
+
+    /* REPRESENTANTES */
+
+    .representantes-container label, .representantes-container input,
+    .representantes-container button[type="submit"], 
+    .representantes-container button[type="button"] {
+        font-size: 2rem !important;
+    }
+
+    .representantes-container .table th:nth-child(4),
+    .representantes-container .table td:nth-child(4) {
+        display: none;
+    }
+
+    .representantes-container .text-left button {
+        margin-bottom: 10% !important;
+    }
+
+    .col-sm-3 {
+        width: 100% !important;
+    }
+
+    /*.representantes-container .table>:not(caption)>*>*,
+    .representantes-container .table td {
+        font-size: 1.7rem;
+        text-align: center;
+    }*/
+
+    /* PACIENTES */
+
+    .pacientes-container label, .pacientes-container input,
+    .pacientes-container select,
+    .pacientes-container button[type="submit"], 
+    .pacientes-container button[type="button"], .pacientes-container select option {
+        font-size: 2rem !important;
+    }
+
+    .pacientes-container .table th:nth-child(4),
+    .pacientes-container .table td:nth-child(4) {
+        display: none;
+    }
+
+    .pacientes-container .col-md-3 button {
+        margin-bottom: 10%;
+    }
+
+    /*.pacientes-container .table>:not(caption)>*>*,
+    .pacientes-container .table td {
+        font-size: 1.7rem;
+        text-align: center;
+    }*/
+
+    .pacientes-container .genero-select {
+        width: 240%;
+    }
+
+    /* CONSULTORIO */
+
+    .consultorio-container .consultorio-inputs .col-6,
+    .consultorio-container .pacientes-inputs .col-6 {
+        width: 100% !important;
+    }
+
+    .consultorio-h3 {
+        margin: 5% 0;
+    }
+
+    .consultorio-h3,
+    .consultorio-container label, .consultorio-container input,
+    .consultorio-container select,
+    .consultorio-container button[type="submit"], 
+    .consultorio-container button[type="button"], .consultorio-container select option {
+        font-size: 2rem !important;
+    }
+
+    .consultorio-container .col-8 {
+        width: 100%;
+    }
+
+    .consultorio-inputs {
+        justify-content: center !important;
+    }
+
+    /* CITAS ADMIN */
+
+    .citas-admin-container {
+        padding-left: 0 !important;
+    }
+
+    .citas-admin-container div.text-left button {
+        margin-bottom: 10% !important;
+    }
+
+    /*.citas-admin-container .table>:not(caption)>*>*,
+    .citas-admin-container .table td {
+        font-size: 1.7rem;
+        text-align: center;
+    }*/
+
+    .citas-h3 {
+        margin: 5% 0;
+        font-size: 2rem !important;
+    }
+
+     /* CONFIGURACION CITAS ADMIN */
+
+
+    .configuracion-citas-container button.w-100{
+        font-size: 2rem !important;
+    }
+
+    .configuracion-citas-container td p {
+        text-align: center !important;
+    }
+
+    /*.configuracion-citas-container .table>:not(caption)>*>*,
+    .configuracion-citas-container .table td {
+        font-size: 1.7rem;
+        text-align: center;
+    }*/
+
+}
+
+/******************************************************************************************************/
+/* MOBILE */
+
+@media screen and (max-width:767px) {   
+
+    /* ESTRUCTURA MOBILE */
+
+    .flex-nowrap {
+        flex-wrap: wrap !important;
+    }
+
+    footer {
+        font-size: 1.5rem;
+        text-align: center;
+        align-items: center !important;
+    }
+
+    footer span.text-muted {
+        margin-bottom: 10% !important;
+    }
+
+    footer ul {
+        margin: 0 auto;
+    }
+
+    footer .fa-lg {
+        font-size: 3rem;
+    }
+
+    /* MODALES */
+    .modal-content .col-sm-6{
+        width: 100% !important;
+        margin-bottom: 5%;
+    }
+
+    .modal-content .col-sm-6 h5, .modal-content .col-sm-6 label, .modal-content input, .modal-contentinput::placeholder, .modal-content select{
+        font-size: 2rem !important;
+    }
+
+    .modal-content .col-sm-6 label, .modal-body {
+        font-weight: bold;
+    }
+
+    .modal-content select option {
+        font-size: 1rem;
+    }
+
+    .modal-footer {
+        justify-content: center !important;
+    }
+
+    /* MENU MOBILE */
+
+    #sidebar-wrapper {
+        width: 100% !important;
+        height: 70% !important;
+        justify-content: center !important;
+        position: relative !important;
+        justify-content: center !important;
+        padding: 4rem 1rem !important;
+    }
+
+    #main {
+        margin: 0 !important;
+    }
+
+    li.nav-item {
+        text-align: center;
+    }
+
+    #sidebar-wrapper a {
+        justify-content: center !important;
+    }
+
+    #sidebar-wrapper a span, #sidebar-wrapper a.d-flex {
+        font-size: 2rem !important;
+    }
+
+    /*//////////////////////////////////////////////INVITADO MOBILE ///////////////////////////////////////////*/
+
+    /* INICIAR SESIÓN MOBILE */
+
+    .login-container h3 {
+        margin-bottom: 10% !important;
+    }
+
+    .login-container label {
+        margin-bottom: 5% !important;
+    }
+
+    .login-container label b, .login-container h3.text-center, .login-container button[type="submit"], .login-container input::placeholder {
+        font-size: 1.7rem !important;
+    }
+
+    /* CREAR CUENTA MOBILE */
+
+    .ventajas h3 {
+        font-size: 2.2rem !important;
+        margin: 5% 0 !important;
+    }
+    
+    .ventajas li {
+        font-size: 2rem !important;
+    }
+
+    .sign-container {
+        padding-left: 0 !important;
+    }
+
+    .sign-container form div {
+        margin-bottom: 5% !important;
+    }
+
+    .sign-container label {
+        margin-bottom: 3% !important;
+    }
+
+    .sign-container label b, .sign-container h3.text-center, .sign-container button[type="submit"], .sign-container input::placeholder, .sign-container input {
+        font-size: 1.7rem !important;
+    }
+
+    /* INFORMACIÓN MOBILE */ 
+
+    .informacion-container h2, h5.p-0, h5, h4 {
+        font-size: 2rem !important;
+    }
+
+    .informacion-container li {
+        font-size: 1.7rem !important;
+    }
+
+    img.informacion-img {
+        width: 350px !important;
+        height: 350px !important;
+    }
+
+
+    /* CONTACTO MOBILE */
+
+    .contacto-container .contact {
+        flex-direction: column !important;
+    }    
+
+    .contacto-container .contact .input-group {
+        width: 200%;
+    }
+
+    .contacto-container .contact .input-group input {
+        font-size: 1.5rem;
+    }
+
+    .contacto-container .container .row {
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    .contacto-container .container .row .col-4 {
+        margin-bottom: 10% !important;
+        width: 100% !important;
+    }
+
+    .contacto-container h1, .contacto.container h2.pb-2, .paginas-titulo {
+        font-size: 2.2rem !important;
+    }
+
+    .contacto-container h2.ubicacion {
+        font-size: 2rem !important;
+    }
+
+    /*///////////////////////////////////////////// USUARIO MOBILE ///////////////////////////////////////*
+
+    /* INICIO MOBILE */
+
+    .inicio-usuario-container {
+        padding-left: 0 !important;
+    }
+
+    .inicio-usuario-container .g-3 {
+        flex-direction: column !important;
+    }
+
+    .inicio-usuario-container .input-group {
+        width: 80vw !important;
+    }
+
+    .inicio-usuario-container input, .inicio-usuario-container p{
+        font-size: 1.5rem !important;
+    }
+
+    .inicio-usuario-container p {
+        margin-top: 5% !important;
+    }
+
+    .inicio-usuario-container .table th:nth-child(4), 
+    .inicio-usuario-container .table td:nth-child(4) {
+        display: none !important;
+    }
+
+    .inicio-usuario-container .table th:nth-child(5) {
+        padding-right: 0 !important;
+    }
+
+    .inicio-usuario-container button.btn {
+        margin-bottom: 10% !important;
+    }
+
+    /* HISTORIAL DE CITAS MOBILE */
+
+    .table>:not(caption)>*>* {
+        padding: 1rem !important;
+    }
+
+    .table th, .table td {
+        font-size: 1.1rem !important;
+    }
+
+    /* CONFIGURACIÓN MOBILE */
+
+    .configuracion-usuario-container .row .col-4 {
+        width: 50% !important;
+    }
+
+    .configuracion-usuario-container .row .col-5 {
+        width: 50% !important;
+        margin: auto !important;
+    }
+
+    .configuracion-usuario-container .cedula-config-div {
+        justify-content: center !important;
+    }
+
+    .configuracion-usuario-container .cedula-config-div .col-2 {
+        width: 100% !important;
+    }
+
+    .configuracion-usuario-container .row input, .configuracion-usuario-container input[type="submit"]
+    {
+        font-size: 1.5rem !important;
+    }
+
+    /*//////////////////////////////////////////////ADMIN ///////////////////////////////////////////*/
+
+    /* INICIO ADMIN MOBILE */
+
+    .admin-inicio-container .table th:nth-child(5),
+    .admin-inicio-container .table tr td:nth-child(5) {
+        display: none !important;
+    }
+
+    .admin-inicio-container .table th:nth-child(3) {
+        padding: 20px 0 !important;
+    }
+
+    .admin-inicio-container div.text-left a {
+        margin-bottom: 10% !important;
+    }
+
+    /* REPRESENTANTES MOBILE */
+
+    .representantes-container label, .representantes-container input,
+    .representantes-container button[type="submit"], 
+    .representantes-container button[type="button"] {
+        font-size: 1.5rem !important;
+    }
+
+    .representantes-container .table th:nth-child(4),
+    .representantes-container .table td:nth-child(4) {
+        display: none;
+    }
+
+    .representantes-container .text-left button {
+        margin-bottom: 10% !important;
+    }
+
+    /* PACIENTES MOBILE */
+    
+    .pacientes-container label, .pacientes-container input,
+    .pacientes-container select,
+    .pacientes-container button[type="submit"], 
+    .pacientes-container button[type="button"] {
+        font-size: 1.5rem !important;
+    }
+
+    .pacientes-container select option {
+        font-size: 1.2rem !important;
+    }
+
+    .pacientes-container .table th:nth-child(4),
+    .pacientes-container .table td:nth-child(4) {
+        display: none;
+    }
+
+    .pacientes-container .col-md-3 button {
+        margin-bottom: 10%;
+    }
+
+    /* CONSULTORIO MOBILE */
+
+    .consultorio-container .consultorio-inputs .col-6,
+    .consultorio-container .pacientes-inputs .col-6 {
+        width: 100% !important;
+    }
+
+    .consultorio-container label, .consultorio-container input,
+    .consultorio-container select,
+    .consultorio-container button[type="submit"], 
+    .consultorio-container button[type="button"] {
+        font-size: 1.4rem !important;
+    }
+
+    .consultorio-container select option {
+        font-size: 1.2rem !important;
+    }
+
+    /* CITAS ADMIN MOBILE */
+
+    .citas-admin-container {
+        padding-left: 0 !important;
+    }
+
+    .citas-admin-container div.text-left button {
+        margin-bottom: 10% !important;
+    }
+
+    /* CONFIGURACIÓN CITAS ADMIN MOBILE */
+
+    .configuracion-citas-container div.text-left button {
+        margin-bottom: 10% !important;
+    }
+
+    .configuracion-citas-container button.w-100{
+        font-size: 1.4rem !important;
+    }
+
+    .configuracion-citas-container td p {
+        text-align: center !important;
+    }
+}
+
+/***************************************************************************************************/
+/* RESPONSIVE PERSONALIZADOS */
+
+@media screen and (max-width:500px) {
+
+    /************************************************* USUARIO PERSONALIZADOS **********************************/
+
+    /* HISTORIAL CITAS PERSONALIZADO */
+
+    .historial-usuario-container .table th:nth-child(1), 
+    .historial-usuario-container .table td:nth-child(1) {
+        display: none !important;
+    }
+
+    /* CONFIGURACIÓN PERSONALIZADO */
+
+    .configuracion-usuario-container .accordion-body .row {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .configuracion-usuario-container .row .col-4 {
+        width: 100% !important;
+    }
+
+    .configuracion-usuario-container .row .col-4 h5 {
+        margin-bottom: 10% !important;
+    }
+
+    /************************************************* ADMIN PERSONALIZADOS **********************************/
+
+    /* INICIO ADMIN PERSONALIZADOS */
+    /* REPRESENTANTES PERSONALIZADOS*/
+    /* PACIENTES PERSONALIZADOS */
+
+    .admin-inicio-container {
+        padding-left: 0 !important;
+    }
+
+    .admin-inicio-container .table th:nth-child(3),
+    .admin-inicio-container .table tr td:nth-child(3), .representantes-container .table th:nth-child(3),
+    .representantes-container .table td:nth-child(3), .pacientes-container .table th:nth-child(2),
+    .pacientes-container .table td:nth-child(2) {
+        display: none !important;
+    }
+
+    /* CITAS ADMIN PERSONALIZADOS */
+
+    .citas-admin-container div#main, .citas-admin-container .table th:nth-child(1) {
+        padding-left: 0 !important;
+    }
+
+    .citas-admin-container .table th:nth-child(3),
+    .citas-admin-container .table td:nth-child(3) {
+        display: none;
+    }
+
+    /* CONFIGURACION CITAS PERSONALIZADOS */
+
+    .lugares-citas th:nth-child(3), 
+    .lugares-citas td:nth-child(3) {
+        display: none;
+    }
+} 

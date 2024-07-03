@@ -1,0 +1,226 @@
+<!-- Plantilla de la cabecera de página, no supe como hacerlo con html 
+así que transforme el archivo a PHP -->
+{% include "cabecera-administrador.html" %}
+
+<!-- Titulo de la página actual-->
+<h1 class="text-center border paginas-titulo border-dark rounded-3 p-2">
+    REPRESENTANTES
+</h1>
+
+<!-- Espacio de línea -->
+<br>
+
+<div class="representantes-container">
+    <label for="basic-url" class="form-label">Agregar Representante</label>
+
+    <!-- Formulario para agregar un nuevo REPRESENTANTE-->
+    <form action="{% url 'representantes' %}" method="post" class="needs-validation border rounded-3 p-2"
+        enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <!-- INPUTs que el usuario ingresará -->
+        <div class="row g-3">
+            <!-- INPUT del nombre del REPRESENTANTE-->
+            <div class="col-sm-12 position-relative">
+                <label class="form-label">Nombre del Usuario</label>
+                <select class="form-select" name="id_usu" required>
+                    <option value="" disabled selected>Elija un usuario</option>
+                    {% for usuario in listaUsuarios %}
+                    <option value="{{ usuario.id }}">{{ usuario.nombre }} </option>
+                    {% endfor %}
+                </select>
+                <!-- En caso de estar vacio se mostrará este mensaje -->
+                <div class="invalid-tooltip">
+                    Es necesario poner el nombre del REPRESENTANTE
+                </div>
+            </div>
+
+            <!-- Boton para enviar la información del formulario -->
+            <div class="col-12">
+                <!-- ENVIAR INFORMACION -->
+                <button type="submit" class="w-100 btn btn-primary btn-lg text-white">Añadir nuevo
+                    REPRESENTANTE</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Espacio de línea -->
+<br>
+
+<div class="representantes-container">
+    <div class="row pb-2">
+        <div class="col-12 d-flex">
+            <div class="col-3 text-start">
+                <label for="basic-url" class="form-label">Lista de Representantes</label>
+
+            </div>
+            <div class="col-7"></div>
+            <div class="col-2">
+                <a name="" id="" class=" btn btn-primary w-100" href="{% url 'pdf_representante' %}"
+                    role="button">PDF</a>
+            </div>
+        </div>
+    </div>
+    <!-- Borde redondo que marca donde empieza y dnde termina el div o tabla-->
+    <div class="border rounded-3 p-2">
+        <!-- Tabla con los pacientes con un hover que hace ver la tabla mas bonita-->
+        <table class="table table-hover ">
+            <thead>
+                <!-- Titulos de la página -->
+                <tr>
+                    <th scope="col">Cédula Represent..</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Teléfono</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Contenido de la tabla-->
+                {% for representante in listaRepresentantes %}
+
+                <tr>
+                    <!-- Cédula del REPRESENTANTE-->
+                    <td class="col-1">
+                        <p>{{ representante.id_usu.cedula }}</p>
+                    </td>
+
+                    <!-- Nombre del REPRESENTANTE-->
+                    <td class="col-3">
+                        <p>{{ representante.id_usu.nombre }}</p>
+                    </td>
+
+                    <!-- Telefono del REPRESENTANTE -->
+                    <td class="col-3">
+                        <p>{{ representante.id_usu.numero }}</p>
+                    </td>
+
+                    <!-- Email del REPRESENTANTE-->
+                    <td class="col-3">
+                        <p>{{ representante.id_usu.correo }}</p>
+                    </td>
+
+                    <!-- ICONOS en la opciones -->
+                    <td class=" col-2">
+                        <div class="text-left">
+
+                            <!-- Icono MODIFICAR cita -->
+                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                                data-bs-target="#representanteModificar{{ representante.id_rep }}">
+                                <i class="fa-solid fa-user-pen"></i>
+                            </button>
+
+                            <!-- Icono ELIMINAR cita -->
+
+                            <!-- IMPORTANTE el ID, si son diferentes no funciona, mediante Javascript o Python se tiene que ir modificando -->
+                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                                data-bs-target="#deleteRepresentante{{ representante.id_rep }}">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+
+                            <!-- MODAL DE OPCIONES -->
+                            <!-- Modal -->
+                            <!-- IMPORTANTE el ID, si son diferentes no funciona, mediante Javascript o Python se tiene que ir modificando -->
+                            <div class="modal fade" id="deleteRepresentante{{ representante.id_rep }}" tabindex="-1"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title"
+                                                id="modelDeleteRepresentante{{ representante.id_rep }}">Eliminar
+                                                Representante
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <select class="form-select" disabled>
+                                                <option value="" selected disabled>{{ representante.id_usu.nombre }}
+                                                </option>
+                                            </select>
+                                            <p class="pt-1 p-0 m-0">¿Está seguro que desea eliminar a este
+                                                representante?</p>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form action="{% url 'representantes' %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="id_rep" value="{{ representante.id_rep }}">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Salir</button>
+                                                <button type="submit" name="btnEliminarRepresentante"
+                                                    class="btn btn-danger">Eliminar</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- MODALES -->
+                            <!-- MODAL DE OPCIONES -->
+                            <!-- Modal -->
+                            <div class="modal fade representantes-container"
+                                id="representanteModificar{{ representante.id_rep }}" tabindex="-1"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Modificar Datos del
+                                                Representante</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <!-- Formulario para agregar un nuevo REPRESENTANTE-->
+                                        <form action="{% url 'representantes' %}" method="post">
+                                            {% csrf_token %}
+
+                                            <div class="modal-body">
+                                                <div class="container-fluid p-0 m-0">
+
+
+                                                    <!-- INPUTs que el usuario ingresará -->
+                                                    <div class="row g-3">
+                                                        <!-- INPUT del nombre del REPRESENTANTE-->
+                                                        <div class="col-sm-12 position-relative">
+                                                            <select class="form-select" name="id_usu_select" required>
+                                                                <option value="" disabled selected>Elija un usuario
+                                                                </option>
+                                                                {% for usuario in listaUsuarios %}
+                                                                <option value="{{ usuario.id }}">{{ usuario.nombre }}
+                                                                </option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input type="hidden" name="id_rep" value="{{ representante.id_rep }}">
+                                                <input type="hidden" name="id_usu"
+                                                    value="{{ representante.id_usu.id }}">
+
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Salir</button>
+                                                <button type="submit" name="btnUpdateRepresentante"
+                                                    class="btn btn-primary">Guardar Cambios</button>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- Plantilla del pie de página -->
+{% include "pie.html" %}

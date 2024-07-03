@@ -1,0 +1,82 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Citas - Dra. Baydi Fernández</title>
+
+    <!-- Ubicacion del archivo FONTAWESOME para poder utilizar iconos -->
+    <link type='text/css' href='{% static "font_awesome/css_font_awesone/all.min.css" %}' rel="stylesheet">
+    <!-- Ubicacion del archivo CSS -->
+    <link type='text/css' href='{% static "css/estilo.css" %}' rel="stylesheet">
+    <!-- Ubicacion del archivo BOOTSTRAP -->
+    <link type='text/css' href='{% static "css/bootstrap/bootstrap.min.css" %}' rel="stylesheet">
+
+</head>
+
+<body>
+
+    <main>
+
+
+        <br> <br> <br>
+        <!-- CONTACTO -->
+        <section class="py-5 container-fluid login-container">
+            <div class="container">
+                <div class="row container-fluid">
+                    <div class="col-2 col-sm-0"></div>
+                    <div
+                        class="col-12 col-lg-8 p-3 m-3 bg-light border border-dark rounded-3 rounded rounded-bottom shadow">
+                        <h3 class="text-center p-0 m-0 fw-bold pb-0">Iniciar Sesión</h3>
+                        <form action="{% url 'iniciarSesion' %}" method="post" class="needs-validation"
+                            enctype="multipart/form-data" novalidate>
+                            {% csrf_token %}
+
+                            <!--method="POST"-->
+                            <div class="input-group mb-3 position-relative">
+                                <div class="col-12">
+                                    <label for="usuario" class="form-label m-0 p-0"><b>Usuario</b></label>
+                                    {{form.username}}
+                                    <div class="invalid-tooltip">
+                                        Es necesario poner el nombre del usuario
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group mb-3 position-relative">
+                                <div class="col-12">
+                                    <label for="contrasenna" class="form-label m-0 p-0"><b>Contraseña</b></label>
+                                    {{form.password}}
+                                    <div class=" invalid-tooltip">
+                                        Es necesario poner la contraseña del usuario
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% if form.password.errors %}
+                            <ul class="nav">
+                                {% for error in form.password.errors %}
+                                <li class="nav-item pb-3">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+
+
+                            <button type="submit" class="btn btn-dark btn-block input-group">Iniciar Sesion</button>
+
+                            <h5 class="py-3 pb-0 text-center">¿No tienes una cuenta?<br><a
+                                    href="{% url 'registrarse' %}">Crear cuenta</a></h5>
+                        </form>
+                    </div>
+                    <h4 class="py-3 pb-0 text-center">Accede por más información<br><a
+                            href="{% url 'informacion_invitado' %}">Clickeando acá</a></h4>
+                    <div class="col-2 col-sm-0"></div>
+                </div>
+            </div>
+        </section>
+
+
+        {% include "pie.html" %}
